@@ -49,7 +49,8 @@ namespace GEX {
 		Eagle,
 		Raptor,
 		TitleScreen,
-		Face
+		Face,
+		Avenger
 	};
 
 	class TextureManager

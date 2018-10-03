@@ -1,6 +1,6 @@
 /**
 * @file
-* Entity.h
+* DataTables.cpp
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,46 +27,29 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
-//
-//
-//
-
-#pragma once
-#include "SceneNode.h"
+#include "DataTables.h"
 
 namespace GEX
 {
-	class Entity : public SceneNode
+	std::map<AircraftType, AircraftData> initializeAircraftData()
 	{
-	public:
 
-		explicit		Entity(int points);
+		std::map<AircraftType, AircraftData> data;
+		//Eagle
+		data[AircraftType::Eagle].hitpoints = 100;
+		data[AircraftType::Eagle].speed = 200.f;
+		data[AircraftType::Eagle].texture = TextureID::Eagle;
 
-		void			setVelocity(sf::Vector2f velocity);
-		void			setVelocity(float vx, float vy);
-		sf::Vector2f	getVelocity() const;
+		//Raptor
+		data[AircraftType::Raptor].hitpoints = 20;
+		data[AircraftType::Raptor].speed = 80.f;
+		data[AircraftType::Raptor].texture = TextureID::Raptor;
 
-		void			accelerate(sf::Vector2f velocity);
-		void			accelerate(float vx, float vy);
+		//Avenger
+		data[AircraftType::Avenger].hitpoints = 40;
+		data[AircraftType::Avenger].speed = 50.f;
+		data[AircraftType::Avenger].texture = TextureID::Avenger;
 
-		void			rotate(float direction);
-		
-		//Hits
-		int				getHitpoints() const;
-		void			damage(int points);
-		void			repair(int points);
-		void			destroy(); //set hitpoints to 0
-		virtual bool	isDestroyed() const;
-
-	private:
-		virtual void	updateCurrent(sf::Time dt);
-
-	private:
-		sf::Vector2f	velocity_;
-		float			rotate_;
-		int				hitpoints_;
-
-	};
+		return data;
+	}
 }
-

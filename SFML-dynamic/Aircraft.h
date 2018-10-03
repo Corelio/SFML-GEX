@@ -36,7 +36,7 @@
 namespace GEX
 {
 	//Types of aircraft
-	enum class AircraftType { Eagle, Raptor};
+	enum class AircraftType { Eagle, Raptor, Avenger};
 
 	class Aircraft : public Entity
 	{

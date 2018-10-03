@@ -29,29 +29,21 @@
 */
 #include "Aircraft.h"
 #include "Category.h"
+#include "DataTables.h"
 
 namespace GEX
 {
-	//Function to return the texture if of an aircraft object
-	TextureID toTextureID(AircraftType type)
+	//Make it private to this file
+	namespace
 	{
-		switch (type)
-		{
-		case AircraftType::Eagle:
-			return TextureID::Eagle;
-			break;
-		case AircraftType::Raptor:
-			return TextureID::Raptor;
-			break;
-		default:
-			return TextureID::Raptor;
-		}
+		const std::map<AircraftType, AircraftData> TABLE = initializeAircraftData();
 	}
 
 	//Aircraft Constructor - Get texture based on the type and set airplane position
 	Aircraft::Aircraft(AircraftType type, TextureManager & textures)
-		: type_(type)
-		, sprite_(textures.get(toTextureID(type)))
+		: Entity(TABLE.at(type).hitpoints)
+		, type_(type)
+		, sprite_(textures.get(TABLE.at(type).texture))
 	{
 		sf::FloatRect bounds = sprite_.getLocalBounds();
 		sprite_.setOrigin(bounds.width / 2.f, bounds.height / 2.f);

@@ -28,10 +28,15 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #include "Entity.h"
+#include <cassert>
 
 namespace GEX
 {
+	Entity::Entity(int points)
+		: hitpoints_(points)
+	{
 
+	}
 	void Entity::setVelocity(sf::Vector2f velocity)
 	{
 		velocity_ = velocity;
@@ -62,6 +67,33 @@ namespace GEX
 	void Entity::rotate(float direction)
 	{
 		rotate_ += direction;
+	}
+
+	int Entity::getHitpoints() const
+	{
+		return hitpoints_;
+	}
+
+	void Entity::damage(int points)
+	{
+		assert(points > 0);
+		points > hitpoints_ ? this->destroy() : hitpoints_ -= points;
+	}
+
+	void Entity::repair(int points)
+	{
+		assert(points > 0);
+		hitpoints_ += points;
+	}
+
+	void Entity::destroy()
+	{
+		hitpoints_ = 0;
+	}
+
+	bool Entity::isDestroyed() const
+	{
+		return hitpoints_ == 0;
 	}
 
 	void Entity::updateCurrent(sf::Time dt)

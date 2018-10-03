@@ -1,6 +1,6 @@
 /**
 * @file
-* Entity.h
+* DataTables.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,46 +27,19 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
-//
-//
-//
-
 #pragma once
-#include "SceneNode.h"
+#include "TextureManager.h"
+#include "Aircraft.h"
+#include <map>
 
 namespace GEX
 {
-	class Entity : public SceneNode
+	struct AircraftData
 	{
-	public:
-
-		explicit		Entity(int points);
-
-		void			setVelocity(sf::Vector2f velocity);
-		void			setVelocity(float vx, float vy);
-		sf::Vector2f	getVelocity() const;
-
-		void			accelerate(sf::Vector2f velocity);
-		void			accelerate(float vx, float vy);
-
-		void			rotate(float direction);
-		
-		//Hits
-		int				getHitpoints() const;
-		void			damage(int points);
-		void			repair(int points);
-		void			destroy(); //set hitpoints to 0
-		virtual bool	isDestroyed() const;
-
-	private:
-		virtual void	updateCurrent(sf::Time dt);
-
-	private:
-		sf::Vector2f	velocity_;
-		float			rotate_;
-		int				hitpoints_;
-
+		int									hitpoints;
+		float								speed;
+		TextureID							texture;
 	};
-}
 
+	std::map<AircraftType, AircraftData>	initializeAircraftData();
+}

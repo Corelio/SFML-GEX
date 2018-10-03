@@ -1,6 +1,6 @@
 /**
 * @file
-* Entity.h
+* TextNode.cpp
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,46 +27,29 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
-//
-//
-//
-
-#pragma once
-#include "SceneNode.h"
+#include "TextNode.h"
+#include "Utility.h"
+#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace GEX
 {
-	class Entity : public SceneNode
+
+	TextNode::TextNode(std::string & text)
 	{
-	public:
+		// text_.setFont();
+		text_.setCharacterSize(20);
+		setText(text);
+	}
 
-		explicit		Entity(int points);
+	void TextNode::setText(const std::string & text)
+	{
+		text_.setString(text);
+		centerOrigin(text_);
+	}
 
-		void			setVelocity(sf::Vector2f velocity);
-		void			setVelocity(float vx, float vy);
-		sf::Vector2f	getVelocity() const;
+	void TextNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		target.draw(text_, states);
+	}
 
-		void			accelerate(sf::Vector2f velocity);
-		void			accelerate(float vx, float vy);
-
-		void			rotate(float direction);
-		
-		//Hits
-		int				getHitpoints() const;
-		void			damage(int points);
-		void			repair(int points);
-		void			destroy(); //set hitpoints to 0
-		virtual bool	isDestroyed() const;
-
-	private:
-		virtual void	updateCurrent(sf::Time dt);
-
-	private:
-		sf::Vector2f	velocity_;
-		float			rotate_;
-		int				hitpoints_;
-
-	};
 }
-

@@ -72,6 +72,12 @@
     <ClCompile Include="GexState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataTables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureManager.h">
@@ -132,6 +138,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GexState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataTables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

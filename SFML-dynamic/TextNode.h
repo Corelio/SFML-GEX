@@ -1,6 +1,6 @@
 /**
 * @file
-* Entity.h
+* TextNode.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,46 +27,26 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
-//
-//
-//
-
 #pragma once
 #include "SceneNode.h"
+#include <string>
+#include <SFML/Graphics/Text.hpp>
 
 namespace GEX
 {
-	class Entity : public SceneNode
+	class TextNode : public SceneNode
 	{
 	public:
+		explicit		TextNode(std::string& text);
 
-		explicit		Entity(int points);
+		void			setText(const std::string& text);
 
-		void			setVelocity(sf::Vector2f velocity);
-		void			setVelocity(float vx, float vy);
-		sf::Vector2f	getVelocity() const;
-
-		void			accelerate(sf::Vector2f velocity);
-		void			accelerate(float vx, float vy);
-
-		void			rotate(float direction);
-		
-		//Hits
-		int				getHitpoints() const;
-		void			damage(int points);
-		void			repair(int points);
-		void			destroy(); //set hitpoints to 0
-		virtual bool	isDestroyed() const;
 
 	private:
-		virtual void	updateCurrent(sf::Time dt);
+		void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	private:
-		sf::Vector2f	velocity_;
-		float			rotate_;
-		int				hitpoints_;
-
+		sf::Text		text_;
 	};
 }
 
