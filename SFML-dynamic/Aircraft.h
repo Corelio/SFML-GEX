@@ -35,6 +35,8 @@
 
 namespace GEX
 {
+	class TextNode;
+
 	//Types of aircraft
 	enum class AircraftType { Eagle, Raptor, Avenger};
 
@@ -47,9 +49,15 @@ namespace GEX
 
 		unsigned int	getCategory() const override;
 
+		void			updateTexts(); //update the mini health and missile display
+	
+	protected:
+		void			updateCurrent(sf::Time dt) override;
 
 	private:
 		AircraftType	type_;
 		sf::Sprite		sprite_;
+		TextNode*		healthDisplay_;
+		TextNode*		missileDisplay_;
 	};
 }

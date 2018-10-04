@@ -1,6 +1,6 @@
 /**
 * @file
-* TextureManager.h
+* FontManager.cpp
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,36 +27,45 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
-//
-// Texture Manager:
-// Manage Game resources
-#pragma once
-#include <map>
-#include <memory>
-#include <SFML/Graphics.hpp>
-#include <stdexcept>
+#include "FontManager.h"
 #include <cassert>
-#include "ResourceIdentifier.h"
 
-namespace GEX {
+namespace GEX
+{
+	FontManager* FontManager::instance_ = nullptr;
 
-
-	class TextureManager
+	FontManager& FontManager::getInstance()
 	{
-	public:
-		TextureManager();
-		~TextureManager();
+		if (!instance_)
+		{
+			FontManager::instance_ = new FontManager();
+		}
+		
+		return *FontManager::instance_;
+	}
 
-		void					load(TextureID id, const std::string& path);
-		sf::Texture&			get(TextureID id) const;
+	void FontManager::load(FontID id, const std::string & path)
+	{
+		std::unique_ptr<sf::Font>	font(new sf::Font());
 
-	private:
-		std::map<
-			TextureID, 
-			std::unique_ptr<sf::Texture>>		textures_;
+		if (!font->loadFromFile(path))
+		{
+			throw std::runtime_error("Font load failed: " + path);
+		}
 
+		auto rc = fonts_.insert(std::make_pair(id, std::move(font)));
 
-	};
+		if (!rc.second)
+		{
+			assert(0); //Big Problem
+		}
+	}
+
+	sf::Font& FontManager::get(FontID id) const
+	{
+		auto found = fonts_.find(id);
+		assert(found != fonts_.end());
+		
+		return *found->second;
+	}
 }
-

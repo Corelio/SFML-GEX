@@ -32,10 +32,9 @@
 
 namespace GEX
 {
-	State::Context::Context(sf::RenderWindow & window, TextureManager & texture, sf::Font & font, PlayerControl & player)
+	State::Context::Context(sf::RenderWindow & window, TextureManager & texture, PlayerControl & player)
 		: window_(&window)
 		, textures_(&texture)
-		, font_(&font)
 		, player_(&player)
 	{
 	}

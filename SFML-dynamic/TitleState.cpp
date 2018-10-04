@@ -30,6 +30,7 @@
 #include "TitleState.h"
 #include "TextureManager.h"
 #include "Utility.h"
+#include "FontManager.h"
 
 TitleState::TitleState(GEX::StateStack& stack, Context context)
 	: GEX::State(stack, context)
@@ -41,7 +42,7 @@ TitleState::TitleState(GEX::StateStack& stack, Context context)
 
 	backgroundSprite_.setTexture(context.textures_->get(GEX::TextureID::TitleScreen));
 
-	text_.setFont(*context.font_);
+	text_.setFont(GEX::FontManager::getInstance().get(GEX::FontID::Main));
 	text_.setString("Press any key to start");
 	centerOrigin(text_);
 

@@ -60,7 +60,6 @@ private:
 	sf::RenderWindow		window_;
 	GEX::PlayerControl		player_;
 	GEX::TextureManager		textures_;
-	sf::Font				font_;
 	GEX::StateStack			stateStack_;
 
 	sf::Text				statisticsText_;

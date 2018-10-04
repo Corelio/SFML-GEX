@@ -28,10 +28,6 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-//
-//
-//
-
 #pragma once
 #include "SceneNode.h"
 
@@ -59,8 +55,8 @@ namespace GEX
 		void			destroy(); //set hitpoints to 0
 		virtual bool	isDestroyed() const;
 
-	private:
-		virtual void	updateCurrent(sf::Time dt);
+	protected:
+		virtual void	updateCurrent(sf::Time dt) override;
 
 	private:
 		sf::Vector2f	velocity_;

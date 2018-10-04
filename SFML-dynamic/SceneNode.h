@@ -72,7 +72,7 @@ namespace GEX
 		SceneNode*				parent_;
 		std::vector<Ptr>		children_;
 
-	private:
+	protected:
 		// Update the tree
 		virtual void			updateCurrent(sf::Time dt);
 		void					updateChildren(sf::Time dt);

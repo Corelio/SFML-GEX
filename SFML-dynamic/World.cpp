@@ -222,13 +222,15 @@ namespace GEX
 		enemy->rotate(180);
 		sceneLayers_[Air]->attachChild(std::move(enemy));
 
+		//2
 		enemy = std::move(std::unique_ptr<Aircraft>(new Aircraft(AircraftType::Raptor, textures_)));
 		enemy->setPosition(spawnPosition_.x + 100.f, spawnPosition_.y - 600.f);
 		enemy->setVelocity(0.f, -scrollSpeed_);
 		enemy->rotate(180);
 		sceneLayers_[Air]->attachChild(std::move(enemy));
 
-		enemy = std::move(std::unique_ptr<Aircraft>(new Aircraft(AircraftType::Eagle, textures_)));
+		//3
+		enemy = std::move(std::unique_ptr<Aircraft>(new Aircraft(AircraftType::Avenger, textures_)));
 		enemy->setPosition(spawnPosition_.x + 400.f, spawnPosition_.y - 600.f);
 		enemy->setVelocity(0.f, -scrollSpeed_);
 		enemy->rotate(180);

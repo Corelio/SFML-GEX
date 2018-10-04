@@ -51,11 +51,10 @@ namespace GEX
 		typedef std::unique_ptr<State> Ptr;
 		struct Context
 		{
-			Context(sf::RenderWindow& window, TextureManager& texture, sf::Font& font, PlayerControl& playercontrol);
+			Context(sf::RenderWindow& window, TextureManager& texture, PlayerControl& playercontrol);
 
 			sf::RenderWindow*	window_;
 			TextureManager*		textures_;
-			sf::Font*			font_;
 			PlayerControl*		player_;
 
 		};

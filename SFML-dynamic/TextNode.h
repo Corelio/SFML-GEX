@@ -37,7 +37,7 @@ namespace GEX
 	class TextNode : public SceneNode
 	{
 	public:
-		explicit		TextNode(std::string& text);
+		explicit		TextNode(const std::string& text);
 
 		void			setText(const std::string& text);
 

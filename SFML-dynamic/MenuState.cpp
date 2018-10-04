@@ -29,6 +29,7 @@
 */
 #include "MenuState.h"
 #include "Utility.h"
+#include "FontManager.h"
 
 
 MenuState::MenuState(GEX::StateStack& stack, Context context)
@@ -36,7 +37,7 @@ MenuState::MenuState(GEX::StateStack& stack, Context context)
 	, options_()
 	, optionsIndex_(0)
 {
-	sf::Font& font = *context.font_;	
+	sf::Font& font = GEX::FontManager::getInstance().get(GEX::FontID::Main);
 	backgroundSprite_.setTexture(context.textures_->get(GEX::TextureID::TitleScreen));
 
 	//set up menu
@@ -53,10 +54,6 @@ MenuState::MenuState(GEX::StateStack& stack, Context context)
 	exitOption.setString("Exit");
 	centerOrigin(exitOption);
 	exitOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 30.f));
-
-	/*sf::Vector2f viewsize = context.window_->getView().getSize();
-	playOption.setPosition(0.5f * viewsize.x, 0.45f * viewsize.y);
-	exitOption.setPosition(0.5f * viewsize.x, 0.5f * viewsize.y);*/
 	
 	options_.push_back(playOption);
 	options_.push_back(exitOption);

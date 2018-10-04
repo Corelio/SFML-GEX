@@ -30,13 +30,14 @@
 #include "TextNode.h"
 #include "Utility.h"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include "FontManager.h"
 
 namespace GEX
 {
 
-	TextNode::TextNode(std::string & text)
+	TextNode::TextNode(const std::string & text)
 	{
-		// text_.setFont();
+		text_.setFont(GEX::FontManager::getInstance().get(GEX::FontID::Main));
 		text_.setCharacterSize(20);
 		setText(text);
 	}

@@ -30,6 +30,9 @@
 #include "Aircraft.h"
 #include "Category.h"
 #include "DataTables.h"
+#include "TextNode.h"
+#include <memory>
+#include <string>
 
 namespace GEX
 {
@@ -47,6 +50,17 @@ namespace GEX
 	{
 		sf::FloatRect bounds = sprite_.getLocalBounds();
 		sprite_.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+
+		//Creating health display and attaching to the graph
+		std::unique_ptr<TextNode> health(new TextNode(std::string("")));
+		healthDisplay_ = health.get();
+		attachChild(std::move(health));
+
+		//Creating missile display and attaching to the graph
+		std::unique_ptr<TextNode> missile(new TextNode(""));
+		missileDisplay_ = missile.get();
+		attachChild(std::move(missile));
+
 	}
 
 	//Draw the current 
@@ -68,6 +82,19 @@ namespace GEX
 		default:
 			Category::None;
 		}
+	}
+
+	void Aircraft::updateTexts()
+	{
+		healthDisplay_->setText(std::to_string(getHitpoints()) + "HP");
+		healthDisplay_->setPosition(0.f, 50.f);
+		healthDisplay_->setRotation(-getRotation());
+	}
+
+	void Aircraft::updateCurrent(sf::Time dt)
+	{
+		updateTexts();
+		Entity::updateCurrent(dt);
 	}
 
 }

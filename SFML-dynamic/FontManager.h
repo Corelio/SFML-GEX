@@ -1,6 +1,6 @@
 /**
 * @file
-* TextureManager.h
+* FontManager.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,36 +27,30 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
-//
-// Texture Manager:
-// Manage Game resources
 #pragma once
 #include <map>
 #include <memory>
-#include <SFML/Graphics.hpp>
-#include <stdexcept>
-#include <cassert>
 #include "ResourceIdentifier.h"
+#include <string>
+#include <SFML/Graphics/Font.hpp>
 
-namespace GEX {
 
-
-	class TextureManager
+namespace GEX
+{
+	class FontManager
 	{
-	public:
-		TextureManager();
-		~TextureManager();
+	private:
+		FontManager() = default;
 
-		void					load(TextureID id, const std::string& path);
-		sf::Texture&			get(TextureID id) const;
+	public:
+		static FontManager&									getInstance();
+
+		void												load(FontID id, const std::string& path);
+		sf::Font&											get(FontID id) const;
 
 	private:
-		std::map<
-			TextureID, 
-			std::unique_ptr<sf::Texture>>		textures_;
-
-
+		static FontManager*									instance_;
+		std::map<FontID, std::unique_ptr<sf::Font>>			fonts_;
 	};
-}
 
+}

@@ -29,6 +29,7 @@
 */
 #include "PauseState.h"
 #include "Utility.h"
+#include "FontManager.h"
 
 PauseState::PauseState(GEX::StateStack& stack, Context context)
 	: GEX::State(stack, context)
@@ -36,13 +37,12 @@ PauseState::PauseState(GEX::StateStack& stack, Context context)
 	, pauseText_()
 	, instructionText_()
 {
-	sf::Font& font = *context.font_;
-	pauseText_.setFont(font);
+	pauseText_.setFont(GEX::FontManager::getInstance().get(GEX::FontID::Main));
 	pauseText_.setString("Game Paused");
 	pauseText_.setCharacterSize(70);
 	centerOrigin(pauseText_);
 
-	instructionText_.setFont(font);
+	instructionText_.setFont(GEX::FontManager::getInstance().get(GEX::FontID::Main));
 	instructionText_.setString("(Press backspace to return to the main menu)");
 	centerOrigin(instructionText_);
 
