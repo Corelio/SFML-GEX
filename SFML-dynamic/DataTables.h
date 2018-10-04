@@ -34,11 +34,24 @@
 
 namespace GEX
 {
+	struct Direction
+	{
+		Direction(float a, float d) 
+			: angle(a)
+			, distance(d) 
+		{}
+
+		float	angle;
+		float	distance;
+	};
+
 	struct AircraftData
 	{
 		int									hitpoints;
 		float								speed;
 		TextureID							texture;
+
+		std::vector<Direction>				directions;
 	};
 
 	std::map<AircraftType, AircraftData>	initializeAircraftData();

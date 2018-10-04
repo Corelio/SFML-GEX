@@ -55,9 +55,16 @@ namespace GEX
 		void			updateCurrent(sf::Time dt) override;
 
 	private:
+		void			updateMovementPattern(sf::Time dt);
+		float			getMaxSpeed() const;
+
+	private:
 		AircraftType	type_;
 		sf::Sprite		sprite_;
 		TextNode*		healthDisplay_;
 		TextNode*		missileDisplay_;
+
+		float			travelDistance_;
+		std::size_t		directionIndex_;
 	};
 }

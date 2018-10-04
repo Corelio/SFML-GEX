@@ -33,6 +33,7 @@
 #include "TextNode.h"
 #include <memory>
 #include <string>
+#include "Utility.h"
 
 namespace GEX
 {
@@ -93,8 +94,35 @@ namespace GEX
 
 	void Aircraft::updateCurrent(sf::Time dt)
 	{
+		updateMovementPattern(dt);
 		updateTexts();
 		Entity::updateCurrent(dt);
+	}
+
+	void Aircraft::updateMovementPattern(sf::Time dt)
+	{
+		// Movement pattern
+		const std::vector<Direction>& directions = TABLE.at(type_).directions;
+		if (!directions.empty())
+		{
+			if (travelDistance_ > directions.at(directionIndex_).distance)
+			{
+				directionIndex_ = (++directionIndex_) % directions.size();
+				travelDistance_ = 0;
+			}
+
+			float radians = toRadian(directions.at(directionIndex_).angle + 90.f);
+			float vx = getMaxSpeed() * std::cos(radians);
+			float vy = getMaxSpeed() * std::sin(radians);
+
+			setVelocity(vx, vy);
+			travelDistance_ += getMaxSpeed() * dt.asSeconds();
+		}
+	}
+
+	float Aircraft::getMaxSpeed() const
+	{
+		return TABLE.at(type_).speed;
 	}
 
 }
