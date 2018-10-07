@@ -63,6 +63,11 @@ bool GameState::handleEvent(const sf::Event & event)
 	{
 		requestStackPush(GEX::StateID::Gex);
 	}
+	else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q) //Assignment - Q quits and calls Menu
+	{
+		requestStackClear();
+		requestStackPush(GEX::StateID::Menu);
+	}
 
 	return true;
 }
