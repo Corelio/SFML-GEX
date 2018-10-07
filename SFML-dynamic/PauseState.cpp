@@ -52,6 +52,7 @@ PauseState::PauseState(GEX::StateStack& stack, Context context)
 
 }
 
+//Draw pause state - Background and texts
 void PauseState::draw()
 {
 	sf::RenderWindow& window = *getContext().window_;
@@ -66,11 +67,15 @@ void PauseState::draw()
 	window.draw(instructionText_);
 }
 
+/*
+Pause stats does not allow other states to update
+*/
 bool PauseState::update(sf::Time dt)
 {
 	return false;
 }
 
+// Events that will be handled in the pause state
 bool PauseState::handleEvent(const sf::Event & event)
 {
 	if (event.type != sf::Event::KeyPressed)
@@ -78,11 +83,13 @@ bool PauseState::handleEvent(const sf::Event & event)
 		return false;
 	}
 
+	//Escape return to previous state
 	if (event.key.code == sf::Keyboard::Escape)
 	{
 		requestStackPop();
 	}
 
+	//Backspace - remove all states and initialize menu state
 	if (event.key.code == sf::Keyboard::BackSpace)
 	{
 		requestStackClear();

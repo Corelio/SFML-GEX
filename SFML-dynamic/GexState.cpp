@@ -41,7 +41,7 @@ GexState::GexState(GEX::StateStack& stack, Context context)
 	, instructionText1_()
 	, instructionText2_()
 {
-	//Get the font from the content
+	//Get the font from the font manager
 	sf::Font& font = GEX::FontManager::getInstance().get(GEX::FontID::Main);
 	
 	//Set text object 1 - game pause

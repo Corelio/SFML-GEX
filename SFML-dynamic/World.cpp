@@ -82,50 +82,6 @@ namespace GEX
 		adaptPlayerVelocity();
 		sceneGraph_.update(dt);
 		adaptPlayerPosition();
-		
-
-		//Homework - Zoom and rotate - just for fun
-		/*
-		if (++counter_ > 5000) {
-			counter_ = 1;
-			orientation_ *= -1;
-		}
-		if (orientation_ > 0) {
-			worldView_.rotate(0.001f);
-			worldView_.zoom(1.00002f);
-		}
-		else {
-			worldView_.rotate(-0.001f);
-			worldView_.zoom(0.99998f);
-		}
-		*/
-		/*
-		// move player
-		auto p = player_->getPosition();
-		auto v = player_->getVelocity();
-		float xspeed = v.x;
-		float yspeed = v.y;
-		if (p.x > worldView_.getSize().x - 50) {
-			xspeed = -50.f;
-		}
-		if (p.x < 50) {
-			xspeed = 50.f;
-		}
-		if (p.y <  worldView_.getCenter().y - (worldView_.getSize().y / 2 - 50))
-		{
-			yspeed = scrollSpeed_*.5;
-		}
-		if (p.y > worldView_.getCenter().y + (worldView_.getSize().y / 2 - 50))
-		{
-			yspeed = scrollSpeed_*2;
-		}
-		//std::cout << p.y << "  " << worldView_.getCenter().y + (worldView_.getSize().y / 2 + 50) << "  " << worldView_.getCenter().y + (worldView_.getSize().y / 2 - 50) << std::endl;
-		player_->setVelocity(xspeed, yspeed);
-
-		rightAircraft_->rotate(100 * dt.asSeconds());
-		leftAircraft_->rotate(-100 * dt.asSeconds());
-		*/
-
 	}
 
 	void World::adaptPlayerPosition()
@@ -203,7 +159,6 @@ namespace GEX
 		sceneLayers_[Air]->attachChild(std::move(leader));
 
 		// add escort Planes
-
 		std::unique_ptr<Aircraft> leftEscort(new Aircraft(AircraftType::Raptor, textures_));
 		leftEscort->setPosition(-80.f, 50.f);
 		leftAircraft_ = leftEscort.get();
@@ -236,13 +191,4 @@ namespace GEX
 		enemy->rotate(180);
 		sceneLayers_[Air]->attachChild(std::move(enemy));
 	}
-	/*
-	
-	View -> ZOOM
-
-	view-> rotate
-
-	world update -> zoom a little and rotate a little
-	*/
-
 }

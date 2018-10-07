@@ -7,7 +7,8 @@
 *
 * @section DESCRIPTION
 * Assignment #1 - The GexState (Oct, 8th)
-*
+* The GEx State Behaves like a pause state
+* 
 * @section LICENSE
 *
 * Copyright 2018

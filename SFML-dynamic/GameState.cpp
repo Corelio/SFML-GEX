@@ -29,8 +29,6 @@
 */
 #include "GameState.h"
 
-
-
 GameState::GameState(GEX::StateStack& stack, Context context)
 	: GEX::State(stack, context)
 	, world_(*context.window_)
@@ -61,7 +59,7 @@ bool GameState::handleEvent(const sf::Event & event)
 	{
 		requestStackPush(GEX::StateID::Pause);
 	}
-	else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::G)
+	else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::G) //Assignment - G calls Gex State
 	{
 		requestStackPush(GEX::StateID::Gex);
 	}
