@@ -28,6 +28,7 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #include "DataTables.h"
+#include "Projectile.h"
 
 namespace GEX
 {
@@ -59,5 +60,12 @@ namespace GEX
 		data[AircraftType::Avenger].directions.emplace_back(Direction(45.f, 50.f));
 
 		return data;
+	}
+	std::map<Projectile::Type, ProjectileData> initializeProjectileData()
+	{
+		std::map<Projectile::Type, ProjectileData> data;
+
+		data[Projectile::Type::AlliedBullet].damage = 10;
+		return std::map<Projectile::Type, ProjectileData>();
 	}
 }

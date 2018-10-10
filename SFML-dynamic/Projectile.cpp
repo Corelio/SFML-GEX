@@ -1,6 +1,6 @@
 /**
 * @file
-* Entity.cpp
+* Projectile.cpp
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,79 +27,55 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-#include "Entity.h"
-#include <cassert>
+#include "Projectile.h"
+#include "DataTables.h"
+#include "Utility.h"
+#include "Category.h"
 
 namespace GEX
 {
-	Entity::Entity(int points)
-		: hitpoints_(points)
-	{
 
-	}
-	void Entity::setVelocity(sf::Vector2f velocity)
+	namespace
 	{
-		velocity_ = velocity;
+		const std::map<Projectile::Type, ProjectileData> TABLE = initializeProjectileData();
 	}
 
-	void Entity::setVelocity(float vx, float vy)
+	Projectile::Projectile(Type type, const TextureManager & textures)
+		: Entity(1)
+		, type_(type)
+		, sprite_(textures.get(TABLE.at(type).texture))
 	{
-		velocity_.x = vx;
-		velocity_.y = vy;
+		centerOrigin(sprite_);
 	}
 
-	sf::Vector2f Entity::getVelocity() const
+	unsigned int Projectile::getCategory() const
 	{
-		return velocity_;
+		if (type_ == Type::EnemyBullet) {
+			return Category::EnemyProjectile;
+		}
+		else
+		{
+			return Category::AlliedProjectile;
+		}
 	}
 
-	void Entity::accelerate(sf::Vector2f velocity)
+	float Projectile::getMaxSpeed() const
 	{
-		velocity_ += velocity;
+		return TABLE.at(type_).speed;
 	}
 
-	void Entity::accelerate(float vx, float vy)
+	int Projectile::getDamage() const
 	{
-		velocity_.x += vx;
-		velocity_.y += vy;
+		return TABLE.at(type_).damage;
 	}
 
-	void Entity::rotate(float direction)
+	void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
-		rotate_ += direction;
+		Entity::updateCurrent(dt, commands);
 	}
 
-	int Entity::getHitpoints() const
+	void Projectile::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const
 	{
-		return hitpoints_;
+		target.draw(sprite_, states);
 	}
-
-	void Entity::damage(int points)
-	{
-		assert(points > 0);
-		points > hitpoints_ ? this->destroy() : hitpoints_ -= points;
-	}
-
-	void Entity::repair(int points)
-	{
-		assert(points > 0);
-		hitpoints_ += points;
-	}
-
-	void Entity::destroy()
-	{
-		hitpoints_ = 0;
-	}
-
-	bool Entity::isDestroyed() const
-	{
-		return hitpoints_ == 0;
-	}
-
-	void Entity::updateCurrent(sf::Time dt, CommandQueue& Commands)
-	{
-		move(velocity_ * dt.asSeconds());
-		setRotation(rotate_);
-	}
-
 }

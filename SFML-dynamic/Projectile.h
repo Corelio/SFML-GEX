@@ -1,6 +1,6 @@
 /**
 * @file
-* DataTables.h
+* Projectile.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -28,40 +28,38 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #pragma once
+#include "Entity.h"
 #include "TextureManager.h"
-#include "Aircraft.h"
-#include <map>
-#include "Projectile.h"
-
+#include "CommandQueue.h"
 namespace GEX
 {
-	struct Direction
+	class Projectile : public Entity
 	{
-		Direction(float a, float d) 
-			: angle(a)
-			, distance(d) 
-		{}
+	public:
+		enum class Type
+		{
+			AlliedBullet,
+			EnemyBullet,
+			Missile
+		};
 
-		float	angle;
-		float	distance;
+	public:
+		Projectile(Type type, const TextureManager& textures);
+
+		unsigned int		getCategory() const override;
+		//sf::FloatRect		getBoundingRect() const;
+
+		float				getMaxSpeed() const;
+		int					getDamage() const;
+
+	private:
+		void				updateCurrent(sf::Time dt, CommandQueue& commands) override;
+		void				drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	private:
+		Type				type_;
+		sf::Sprite			sprite_;
+		sf::Vector2f		targetDirection_;
 	};
-
-	struct AircraftData
-	{
-		int										hitpoints;
-		float									speed;
-		TextureID								texture;
-
-		std::vector<Direction>					directions;
-	};
-
-	struct ProjectileData
-	{
-		int										damage;
-		float									speed;
-		TextureID								texture;
-	};
-
-	std::map<AircraftType, AircraftData>		initializeAircraftData();
-	std::map<Projectile::Type, ProjectileData>	initializeProjectileData();
 }
+

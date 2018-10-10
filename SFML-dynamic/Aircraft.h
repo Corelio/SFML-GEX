@@ -35,6 +35,7 @@
 
 namespace GEX
 {
+	class CommandQueue;
 	class TextNode;
 
 	//Types of aircraft
@@ -52,7 +53,7 @@ namespace GEX
 		void			updateTexts(); //update the mini health and missile display
 	
 	protected:
-		void			updateCurrent(sf::Time dt) override;
+		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
 	private:
 		void			updateMovementPattern(sf::Time dt);

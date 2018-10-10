@@ -54,7 +54,7 @@ namespace GEX
 		worldView_.setCenter(spawnPosition_);
 	}
 
-	void World::update(sf::Time dt)
+	void World::update(sf::Time dt, CommandQueue& commands)
 	{
 		// For fun!! Replacing the background when it world bounds ends
 		if (worldView_.getCenter().y - (worldView_.getSize().y / 2 - 50) < 50)
@@ -80,8 +80,11 @@ namespace GEX
 		}
 		
 		adaptPlayerVelocity();
-		sceneGraph_.update(dt);
+		sceneGraph_.update(dt, commands);
 		adaptPlayerPosition();
+
+		//check if there are any enemy inside of the battlefield and spawn it
+		spawnEmenies();
 	}
 
 	void World::adaptPlayerPosition()
@@ -105,6 +108,69 @@ namespace GEX
 		{
 			player_->setVelocity(velocity / std::sqrt(2.f));
 		}
+	}
+
+	void World::addEnemies()
+	{
+		addEnemy(AircraftType::Raptor, -250.f, 300.f);
+		addEnemy(AircraftType::Raptor, 0.f, 300.f);
+		addEnemy(AircraftType::Raptor, +250.f, 300.f);
+
+		addEnemy(AircraftType::Raptor, -250.f, 600.f);
+		addEnemy(AircraftType::Raptor, 0.f, 600.f);
+		addEnemy(AircraftType::Raptor, +250.f, 600.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 500.f);
+		addEnemy(AircraftType::Avenger, 70.f, 500.f);
+
+		addEnemy(AircraftType::Avenger, -70.f, 900.f);
+		addEnemy(AircraftType::Avenger, 70.f, 900.f);
+
+		addEnemy(AircraftType::Avenger, -170.f, 1500.f);
+		addEnemy(AircraftType::Avenger, 170.f, 1500.f);
+
+		//Sort the enemy vector by Y position
+		std::sort(enemySpawnPoints_.begin(), enemySpawnPoints_.end(),
+			[] (SpawnPoint lhs, SpawnPoint rhs)
+			{
+				return lhs.y < rhs.y;
+			}
+			);
+
+	}
+
+	void World::addEnemy(AircraftType type, float relX, float relY)
+	{
+		enemySpawnPoints_.push_back(SpawnPoint(type, spawnPosition_.x + relX, spawnPosition_.y - relY));
+	}
+
+	void World::spawnEmenies()
+	{
+		//Check if the vector is not empty and the last element is inside of the battlegrounds
+		while (!enemySpawnPoints_.empty() && enemySpawnPoints_.back().y > getBattlefieldBounds().top) {
+
+			auto spawnPoint = enemySpawnPoints_.back();
+			enemySpawnPoints_.pop_back();
+			std::unique_ptr<Aircraft> enemy(new Aircraft(spawnPoint.type, textures_));
+			enemy->setPosition(spawnPoint.x, spawnPoint.y);
+			enemy->setVelocity(0.f, -scrollSpeed_);
+			enemy->rotate(180);
+			sceneLayers_[Air]->attachChild(std::move(enemy));
+
+		}
+	}
+
+	sf::FloatRect World::getViewBounds() const
+	{
+		return sf::FloatRect(worldView_.getCenter() - worldView_.getSize() / 2.f, worldView_.getSize());
+	}
+
+	sf::FloatRect World::getBattlefieldBounds() const
+	{
+		sf::FloatRect bounds = getViewBounds();
+		bounds.top -= 100.f;
+		bounds.height += 100.f;
+		return bounds;
 	}
 
 	void World::draw()
@@ -158,37 +224,8 @@ namespace GEX
 		player_ = leader.get();
 		sceneLayers_[Air]->attachChild(std::move(leader));
 
-		// add escort Planes
-		std::unique_ptr<Aircraft> leftEscort(new Aircraft(AircraftType::Raptor, textures_));
-		leftEscort->setPosition(-80.f, 50.f);
-		leftAircraft_ = leftEscort.get();
-		player_->attachChild(std::move(leftEscort));
+		addEnemies();
 
-		std::unique_ptr<Aircraft> rightEscort(new Aircraft(AircraftType::Avenger, textures_));
-		rightEscort->setPosition(80.f, 50.f);
-		rightAircraft_ = rightEscort.get();
-		player_->attachChild(std::move(rightEscort));
-
-		//add enemy planes
-		//1
-		std::unique_ptr<Aircraft> enemy(new Aircraft(AircraftType::Avenger, textures_));
-		enemy->setPosition(spawnPosition_.x -100.f, spawnPosition_.y - 600.f);
-		enemy->setVelocity(0.f, -scrollSpeed_);
-		enemy->rotate(180);
-		sceneLayers_[Air]->attachChild(std::move(enemy));
-
-		//2
-		enemy = std::move(std::unique_ptr<Aircraft>(new Aircraft(AircraftType::Raptor, textures_)));
-		enemy->setPosition(spawnPosition_.x + 100.f, spawnPosition_.y - 600.f);
-		enemy->setVelocity(0.f, -scrollSpeed_);
-		enemy->rotate(180);
-		sceneLayers_[Air]->attachChild(std::move(enemy));
-
-		//3
-		enemy = std::move(std::unique_ptr<Aircraft>(new Aircraft(AircraftType::Avenger, textures_)));
-		enemy->setPosition(spawnPosition_.x + 400.f, spawnPosition_.y - 600.f);
-		enemy->setVelocity(0.f, -scrollSpeed_);
-		enemy->rotate(180);
-		sceneLayers_[Air]->attachChild(std::move(enemy));
+		
 	}
 }

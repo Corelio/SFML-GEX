@@ -43,8 +43,8 @@ void GameState::draw()
 
 bool GameState::update(sf::Time dt)
 {
-	world_.update(dt);
 	auto& commands = world_.getCommandQueue();
+	world_.update(dt, commands);
 	player_.handleRealTimeInput(commands);
 	
 	return true;

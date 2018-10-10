@@ -28,9 +28,7 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-//
-// Scene Node
-//
+
 #pragma once
 
 #include <SFML\Graphics\Transformable.hpp>
@@ -44,6 +42,7 @@
 
 namespace GEX
 {
+	class CommandQueue;
 	struct Command;
 
 	class SceneNode : public sf::Transformable, public sf::Drawable
@@ -61,7 +60,7 @@ namespace GEX
 		void					attachChild(Ptr child);
 		SceneNode::Ptr			detachChild(const SceneNode& ptr);
 								
-		void					update(sf::Time dt);
+		void					update(sf::Time dt, CommandQueue& commands);
 		void					onCommand(const Command& command, sf::Time dt);
 		virtual unsigned int	getCategory() const;
 
@@ -74,8 +73,8 @@ namespace GEX
 
 	protected:
 		// Update the tree
-		virtual void			updateCurrent(sf::Time dt);
-		void					updateChildren(sf::Time dt);
+		virtual void			updateCurrent(sf::Time dt, CommandQueue& commands);
+		void					updateChildren(sf::Time dt, CommandQueue& commands);
 
 		//draw the tree
 		void					draw(sf::RenderTarget& target, sf::RenderStates states) const override;
