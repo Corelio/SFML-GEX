@@ -30,6 +30,7 @@
 #include "PlayerControl.h"
 #include "Aircraft.h"
 #include "Command.h"
+#include <functional>
 
 namespace GEX
 {
@@ -66,6 +67,9 @@ namespace GEX
 		keyBindings_[sf::Keyboard::Down] = Action::MoveDown;
 		keyBindings_[sf::Keyboard::R] = Action::EnemyRotateRight;
 		keyBindings_[sf::Keyboard::L] = Action::EnemyRotateLeft;
+
+		keyBindings_[sf::Keyboard::Space] = Action::Fire;
+		keyBindings_[sf::Keyboard::M] = Action::LaunchMissile;
 
 		//Set up actionbindings 
 		initializeActions();
@@ -129,6 +133,13 @@ namespace GEX
 		actionBindings_[Action::EnemyRotateLeft].category = Category::EnemyAircraft;
 		actionBindings_[Action::EnemyRotateRight].action = derivedAction<Aircraft>(AircraftRotator(1.f));
 		actionBindings_[Action::EnemyRotateRight].category = Category::EnemyAircraft;
+
+		/*actionBindings_[Action::Fire].action = derivedAction<Aircraft>(std::bind(&Aircraft::fire, std::placeholders::_1));
+		actionBindings_[Action::Fire].category = Category::PlayerAircraft;
+
+		actionBindings_[Action::LaunchMissile].action = derivedAction<Aircraft>(std::bind(&Aircraft::launchMissile, std::placeholders::_1));
+		actionBindings_[Action::LaunchMissile].category = Category::PlayerAircraft;
+		*/
 		
 	}
 }

@@ -28,9 +28,6 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-///@file
-///
-/// Doxy Comments go here
 #pragma once
 
 #include <map>
@@ -50,7 +47,9 @@ namespace GEX
 		MoveUp,
 		MoveDown,
 		EnemyRotateRight,
-		EnemyRotateLeft
+		EnemyRotateLeft,
+		Fire,
+		LaunchMissile
 	};
 
 	class PlayerControl

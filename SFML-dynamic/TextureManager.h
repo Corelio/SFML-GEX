@@ -28,9 +28,6 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-//
-// Texture Manager:
-// Manage Game resources
 #pragma once
 #include <map>
 #include <memory>

@@ -48,9 +48,25 @@ namespace GEX
 		: Entity(TABLE.at(type).hitpoints)
 		, type_(type)
 		, sprite_(textures.get(TABLE.at(type).texture))
+		, healthDisplay_(nullptr)
+		, missileDisplay_(nullptr)
+		, travelDistance_(0.f)
+		, directionIndex_(0)
+		, isFiring_(false)
+		, fireRateLevel_(1)
+		, fireSpreadLevel_(1)
+		, fireCountdown_(sf::Time::Zero)
+		, fireCommand_()
 	{
-		sf::FloatRect bounds = sprite_.getLocalBounds();
-		sprite_.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+
+		//Set up commands
+		fireCommand_.category = Category::AirSceneLayer;
+		fireCommand_.action = [this, &textures](SceneNode& node, sf::Time dt) 
+		{
+			createBullets(node, textures);
+		};
+
+		centerOrigin(sprite_);
 
 		//Creating health display and attaching to the graph
 		std::unique_ptr<TextNode> health(new TextNode(std::string("")));
@@ -123,6 +139,19 @@ namespace GEX
 	float Aircraft::getMaxSpeed() const
 	{
 		return TABLE.at(type_).speed;
+	}
+
+	void Aircraft::createBullets(SceneNode & node, TextureManager & texture)
+	{
+
+	}
+
+	void Aircraft::createProjectile(SceneNode & node, Projectile::Type type, float xOffset, float yOffset, const TextureManager & textures)
+	{
+	}
+
+	void Aircraft::checkProjectilelaunch(sf::Time dt, CommandQueue & commands)
+	{
 	}
 
 }

@@ -52,8 +52,8 @@ namespace GEX
 		using Ptr = std::unique_ptr<SceneNode>;
 
 	public:
-		SceneNode();
-		virtual	~SceneNode();
+		SceneNode(Category::Type category = Category::Type::None);
+		virtual	~SceneNode() = default;
 		SceneNode(const SceneNode&) = delete;
 		SceneNode&				operator=(SceneNode&) = delete;
 
@@ -70,6 +70,8 @@ namespace GEX
 	private:
 		SceneNode*				parent_;
 		std::vector<Ptr>		children_;
+
+		Category::Type			category_;
 
 	protected:
 		// Update the tree

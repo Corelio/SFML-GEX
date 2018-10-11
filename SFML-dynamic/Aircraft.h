@@ -32,6 +32,8 @@
 #include "Entity.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include "TextureManager.h"
+#include "Command.h"
+#include "Projectile.h"
 
 namespace GEX
 {
@@ -51,6 +53,9 @@ namespace GEX
 		unsigned int	getCategory() const override;
 
 		void			updateTexts(); //update the mini health and missile display
+
+		void			fire();
+		void			launchMissile() {};
 	
 	protected:
 		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;
@@ -58,6 +63,16 @@ namespace GEX
 	private:
 		void			updateMovementPattern(sf::Time dt);
 		float			getMaxSpeed() const;
+
+		void			createBullets(SceneNode& node, TextureManager& texture);
+		void			createProjectile(
+										SceneNode& node, 
+										Projectile::Type type, 
+										float xOffset, 
+										float yOffset, 
+										const TextureManager& textures);
+		
+		void			checkProjectilelaunch(sf::Time dt, CommandQueue& commands);
 
 	private:
 		AircraftType	type_;
@@ -67,5 +82,13 @@ namespace GEX
 
 		float			travelDistance_;
 		std::size_t		directionIndex_;
+
+		bool			isFiring_;
+		int				fireRateLevel_;
+		int				fireSpreadLevel_;
+		sf::Time		fireCountdown_;
+
+		Command			fireCommand_;
+
 	};
 }

@@ -33,15 +33,12 @@
 
 namespace GEX
 {
-	SceneNode::SceneNode()
+	SceneNode::SceneNode(Category::Type category)
 		: children_()
 		, parent_(nullptr)
+		, category_(category)
 	{
 
-	}
-
-	SceneNode::~SceneNode()
-	{
 	}
 
 	void SceneNode::attachChild(Ptr child)
@@ -87,7 +84,7 @@ namespace GEX
 
 	unsigned int SceneNode::getCategory() const
 	{
-		return Category::Type::None;
+		return category_;
 	}
 
 	sf::Vector2f SceneNode::getWorldPosition() const

@@ -192,6 +192,9 @@ namespace GEX
 		textures_.load(GEX::TextureID::Landscape, "Media/Textures/Desert.png");
 		textures_.load(GEX::TextureID::Space, "Media/Textures/Space.png");
 		textures_.load(GEX::TextureID::Avenger, "Media/Textures/Avenger.png");
+		textures_.load(GEX::TextureID::Bullet, "Media/Textures/Bullet.png");
+		textures_.load(GEX::TextureID::Missile, "Media/Textures/Missile.png");
+
 	}
 
 	void World::buildScene()
@@ -199,7 +202,8 @@ namespace GEX
 		// Initialize layers
 		for (int i = 0; i < LayerCount; ++i)
 		{
-			SceneNode::Ptr layer(new SceneNode());
+			auto category = (i == Air) ? Category::Type::AirSceneLayer : Category::Type::None;
+			SceneNode::Ptr layer(new SceneNode(category));
 			sceneLayers_.push_back(layer.get());
 			sceneGraph_.attachChild(std::move(layer));
 		}
