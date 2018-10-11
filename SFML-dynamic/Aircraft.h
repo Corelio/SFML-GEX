@@ -56,6 +56,8 @@ namespace GEX
 
 		void			fire();
 		void			launchMissile() {};
+
+		bool			isAllied() const;
 	
 	protected:
 		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;

@@ -60,7 +60,7 @@ namespace GEX
 		data[AircraftType::Avenger].directions.emplace_back(Direction(-45.f, 100.f));
 		data[AircraftType::Avenger].directions.emplace_back(Direction(0.f, 50.f));
 		data[AircraftType::Avenger].directions.emplace_back(Direction(45.f, 50.f));
-		data[AircraftType::Eagle].fireInterval = sf::seconds(2);
+		data[AircraftType::Avenger].fireInterval = sf::seconds(2);
 
 		return data;
 	}

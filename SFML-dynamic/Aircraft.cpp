@@ -34,6 +34,7 @@
 #include <memory>
 #include <string>
 #include "Utility.h"
+#include "CommandQueue.h"
 
 namespace GEX
 {
@@ -53,8 +54,8 @@ namespace GEX
 		, travelDistance_(0.f)
 		, directionIndex_(0)
 		, isFiring_(false)
-		, fireRateLevel_(1)
-		, fireSpreadLevel_(1)
+		, fireRateLevel_(1.f)
+		, fireSpreadLevel_(1.f)
 		, fireCountdown_(sf::Time::Zero)
 		, fireCommand_()
 	{
@@ -108,11 +109,25 @@ namespace GEX
 		healthDisplay_->setRotation(-getRotation());
 	}
 
+	void Aircraft::fire()
+	{
+		if (TABLE.at(type_).fireInterval != sf::Time::Zero)
+		{
+			isFiring_ = true;
+		}
+	}
+
+	bool Aircraft::isAllied() const
+	{
+		return type_ == AircraftType::Eagle;
+	}
+
 	void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		updateMovementPattern(dt);
-		updateTexts();
 		Entity::updateCurrent(dt, commands);
+		updateTexts();
+		checkProjectilelaunch(dt, commands);
 	}
 
 	void Aircraft::updateMovementPattern(sf::Time dt)
@@ -143,15 +158,68 @@ namespace GEX
 
 	void Aircraft::createBullets(SceneNode & node, TextureManager & texture)
 	{
-
+		Projectile::Type type = isAllied() ? Projectile::Type::AlliedBullet : Projectile::Type::EnemyBullet;
+		switch (fireSpreadLevel_)
+		{
+		case 1:
+			createProjectile(node, type, 0.f, 0.5f, texture);
+			break;
+		case 2:
+			createProjectile(node, type, -0.33f, 0.5f, texture);
+			createProjectile(node, type, 0.33f, 0.5f, texture);
+			break;
+		case 3:
+			createProjectile(node, type, -0.5f, 0.5f, texture);
+			createProjectile(node, type, 0.f, 0.5f, texture);
+			createProjectile(node, type, 0.5f, 0.5f, texture);
+			break;
+		}
 	}
 
 	void Aircraft::createProjectile(SceneNode & node, Projectile::Type type, float xOffset, float yOffset, const TextureManager & textures)
 	{
+		//Create the projectile
+		std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
+		
+		//Deal with the projectile position
+		sf::Vector2f offset(xOffset * sprite_.getGlobalBounds().width, yOffset * sprite_.getGlobalBounds().height);
+		sf::Vector2f velocity(0.f, projectile->getMaxSpeed());
+		float sign = isAllied() ? -1.f : 1.f;
+
+
+		projectile->setPosition(getWorldPosition() + offset * sign);
+		projectile->setVelocity(velocity*sign);
+		node.attachChild(std::move(projectile));
 	}
 
 	void Aircraft::checkProjectilelaunch(sf::Time dt, CommandQueue & commands)
 	{
+		//Bulletss
+		//Enemies are always firing
+		//at least those that are able to fire
+		if (!isAllied())
+		{
+			fire();
+		}
+		
+		if (isFiring_ && fireCountdown_ <= sf::Time::Zero)
+		{
+			commands.push(fireCommand_);
+			isFiring_ = false;
+			fireCountdown_ = TABLE.at(type_).fireInterval / (fireRateLevel_ + 1.f);
+		}
+		else if(fireCountdown_ > sf::Time::Zero)
+		{
+			fireCountdown_ -= dt;
+		}
+
+		//Missile - to be implemented later
+		/*if (isLaunchingMissile)
+		{
+			commands.push(launchMissileCommand_);
+			isLaunchingMissile = false;
+		}*/
+
 	}
 
 }
