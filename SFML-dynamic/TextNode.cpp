@@ -42,9 +42,10 @@ namespace GEX
 		setText(text);
 	}
 
-	void TextNode::setText(const std::string & text)
+	void TextNode::setText(const std::string & text, const sf::Color color)
 	{
 		text_.setString(text);
+		text_.setFillColor(color);
 		centerOrigin(text_);
 	}
 

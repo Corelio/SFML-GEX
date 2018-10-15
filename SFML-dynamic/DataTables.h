@@ -52,6 +52,7 @@ namespace GEX
 		float									speed;
 		TextureID								texture;
 		sf::Time								fireInterval;
+		int										missileAmount;
 
 		std::vector<Direction>					directions;
 	};

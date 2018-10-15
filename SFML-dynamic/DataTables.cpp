@@ -41,6 +41,7 @@ namespace GEX
 		data[AircraftType::Eagle].speed = 200.f;
 		data[AircraftType::Eagle].texture = TextureID::Eagle;
 		data[AircraftType::Eagle].fireInterval = sf::seconds(1);
+		data[AircraftType::Eagle].missileAmount = 12;
 
 		//Raptor
 		data[AircraftType::Raptor].hitpoints = 20;
@@ -50,6 +51,7 @@ namespace GEX
 		data[AircraftType::Raptor].directions.emplace_back(Direction(-45.f, 160.f));
 		data[AircraftType::Raptor].directions.emplace_back(Direction(45.f, 80.f));
 		data[AircraftType::Raptor].fireInterval = sf::Time::Zero;
+		data[AircraftType::Raptor].missileAmount = 0;
 
 		//Avenger
 		data[AircraftType::Avenger].hitpoints = 40;
@@ -61,6 +63,7 @@ namespace GEX
 		data[AircraftType::Avenger].directions.emplace_back(Direction(0.f, 50.f));
 		data[AircraftType::Avenger].directions.emplace_back(Direction(45.f, 50.f));
 		data[AircraftType::Avenger].fireInterval = sf::seconds(2);
+		data[AircraftType::Avenger].missileAmount = 0;
 
 		return data;
 	}
@@ -78,7 +81,7 @@ namespace GEX
 		data[Projectile::Type::EnemyBullet].texture = TextureID::Bullet;
 
 		data[Projectile::Type::Missile].damage = 200;
-		data[Projectile::Type::Missile].speed = 150.f;
+		data[Projectile::Type::Missile].speed = 300.f;
 		data[Projectile::Type::Missile].texture = TextureID::Missile;
 
 		return data;

@@ -54,10 +54,12 @@ namespace GEX
 		, travelDistance_(0.f)
 		, directionIndex_(0)
 		, isFiring_(false)
+		, isLaunchingMissile_(false)
 		, fireRateLevel_(1.f)
 		, fireSpreadLevel_(1.f)
 		, fireCountdown_(sf::Time::Zero)
 		, fireCommand_()
+		, missileAmmo_(TABLE.at(type).missileAmount)
 	{
 
 		//Set up commands
@@ -65,6 +67,12 @@ namespace GEX
 		fireCommand_.action = [this, &textures](SceneNode& node, sf::Time dt) 
 		{
 			createBullets(node, textures);
+		};
+
+		launchMissileCommand_.category = Category::AirSceneLayer;
+		launchMissileCommand_.action = [this, &textures](SceneNode& node, sf::Time dt)
+		{
+			createProjectile(node, Projectile::Type::Missile, 0.f, 0.5f, textures);
 		};
 
 		centerOrigin(sprite_);
@@ -107,6 +115,15 @@ namespace GEX
 		healthDisplay_->setText(std::to_string(getHitpoints()) + "HP");
 		healthDisplay_->setPosition(0.f, 50.f);
 		healthDisplay_->setRotation(-getRotation());
+		if (type_ == AircraftType::Eagle)
+		{
+			sf::Color color = sf::Color::Green;
+			if (missileAmmo_ <= 2) {
+				color = sf::Color::Red;
+			} 
+			missileDisplay_->setText("Missile: " + std::to_string(missileAmmo_), color);
+			missileDisplay_->setPosition(0.f, 70.f);
+		}
 	}
 
 	void Aircraft::fire()
@@ -186,7 +203,6 @@ namespace GEX
 		sf::Vector2f velocity(0.f, projectile->getMaxSpeed());
 		float sign = isAllied() ? -1.f : 1.f;
 
-
 		projectile->setPosition(getWorldPosition() + offset * sign);
 		projectile->setVelocity(velocity*sign);
 		node.attachChild(std::move(projectile));
@@ -213,12 +229,17 @@ namespace GEX
 			fireCountdown_ -= dt;
 		}
 
-		//Missile - to be implemented later
-		/*if (isLaunchingMissile)
+		//Missile
+		if (isLaunchingMissile_)
 		{
-			commands.push(launchMissileCommand_);
-			isLaunchingMissile = false;
-		}*/
+			if (missileAmmo_ > 0)
+			{
+				commands.push(launchMissileCommand_);
+				isLaunchingMissile_ = false;
+				missileAmmo_--;
+			}
+			
+		}
 
 	}
 

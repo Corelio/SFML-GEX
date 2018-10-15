@@ -39,7 +39,7 @@ namespace GEX
 	public:
 		explicit		TextNode(const std::string& text);
 
-		void			setText(const std::string& text);
+		void			setText(const std::string& text, const sf::Color color = sf::Color::White);
 
 
 	private:

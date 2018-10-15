@@ -55,7 +55,7 @@ namespace GEX
 		void			updateTexts(); //update the mini health and missile display
 
 		void			fire();
-		void			launchMissile() {};
+		void			launchMissile() { isLaunchingMissile_ = true; };
 
 		bool			isAllied() const;
 	
@@ -89,8 +89,11 @@ namespace GEX
 		int				fireRateLevel_;
 		int				fireSpreadLevel_;
 		sf::Time		fireCountdown_;
+		bool			isLaunchingMissile_;
+		int				missileAmmo_;
 
 		Command			fireCommand_;
+		Command			launchMissileCommand_;
 
 	};
 }

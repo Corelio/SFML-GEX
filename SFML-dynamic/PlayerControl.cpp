@@ -81,7 +81,7 @@ namespace GEX
 		if (event.type == sf::Event::KeyPressed)
 		{
 			auto found = keyBindings_.find(event.key.code);
-			if (found != keyBindings_.end())
+			if (found != keyBindings_.end() && !isRealTimeAction(found->second))
 			{
 				commands.push(actionBindings_.at(found->second));
 			}
@@ -89,7 +89,7 @@ namespace GEX
 	}
 
 	void PlayerControl::handleRealTimeInput(CommandQueue & commands)
-	{
+		{
 		//travese all assigned keys, look up the action, generate command
 		for (auto pair : keyBindings_)
 		{
@@ -110,6 +110,7 @@ namespace GEX
 		case Action::MoveDown:
 		case Action::EnemyRotateLeft:
 		case Action::EnemyRotateRight:
+		case Action::Fire:
 			return true;
 			break;
 		default:
@@ -125,6 +126,9 @@ namespace GEX
 		actionBindings_[Action::MoveRight].action = derivedAction<Aircraft>(AircraftMover(playerSpeed, 0.f));
 		actionBindings_[Action::MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
 		actionBindings_[Action::MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f, playerSpeed));
+		actionBindings_[Action::Fire].action = derivedAction<Aircraft>(std::bind(&Aircraft::fire, std::placeholders::_1));
+		actionBindings_[Action::LaunchMissile].action = derivedAction<Aircraft>(std::bind(&Aircraft::launchMissile, std::placeholders::_1));
+
 		for (auto& pair : actionBindings_)
 		{
 			pair.second.category = Category::PlayerAircraft;
@@ -133,12 +137,6 @@ namespace GEX
 		actionBindings_[Action::EnemyRotateLeft].category = Category::EnemyAircraft;
 		actionBindings_[Action::EnemyRotateRight].action = derivedAction<Aircraft>(AircraftRotator(1.f));
 		actionBindings_[Action::EnemyRotateRight].category = Category::EnemyAircraft;
-
-		actionBindings_[Action::Fire].action = derivedAction<Aircraft>(std::bind(&Aircraft::fire, std::placeholders::_1));
-		actionBindings_[Action::Fire].category = Category::PlayerAircraft;
-
-		actionBindings_[Action::LaunchMissile].action = derivedAction<Aircraft>(std::bind(&Aircraft::launchMissile, std::placeholders::_1));
-		actionBindings_[Action::LaunchMissile].category = Category::PlayerAircraft;
 		
 		
 	}
