@@ -42,7 +42,11 @@ namespace GEX
 		TitleScreen,
 		Face,
 		Avenger,
-		Bullet
+		Bullet,
+		HealthRefill,
+		MissileRefill,
+		FireSpread,
+		FireRate
 	};
 
 	enum class FontID

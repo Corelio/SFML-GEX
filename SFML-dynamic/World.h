@@ -28,9 +28,6 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-//
-// The Game World
-//
 #pragma once
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -73,6 +70,8 @@ namespace GEX
 
 		sf::FloatRect				getViewBounds() const;
 		sf::FloatRect				getBattlefieldBounds() const;
+
+		void						guideMissiles();
 
 	private:
 		enum Layer
@@ -118,6 +117,8 @@ namespace GEX
 		CommandQueue				commandQueue_;
 
 		std::vector<SpawnPoint>		enemySpawnPoints_;
+
+		std::vector<Aircraft*>		activeEnemies_;
 
 	};
 

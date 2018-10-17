@@ -64,11 +64,6 @@ namespace GEX
 		velocity_.y += vy;
 	}
 
-	void Entity::rotate(float direction)
-	{
-		rotate_ += direction;
-	}
-
 	int Entity::getHitpoints() const
 	{
 		return hitpoints_;
@@ -99,7 +94,6 @@ namespace GEX
 	void Entity::updateCurrent(sf::Time dt, CommandQueue& Commands)
 	{
 		move(velocity_ * dt.asSeconds());
-		setRotation(rotate_);
 	}
 
 }

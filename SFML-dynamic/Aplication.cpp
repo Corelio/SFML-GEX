@@ -75,6 +75,9 @@ void Aplication::run()
 		timeSinceLastUpdate += clock.restart();
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
+
+			timeSinceLastUpdate -= TimePerFrame;
+
 			processInputs();
 			update(TimePerFrame);
 
@@ -82,8 +85,6 @@ void Aplication::run()
 			{
 				window_.close();
 			}
-
-			timeSinceLastUpdate -= TimePerFrame;
 		}
 
 		updateStatistics(timeSinceLastUpdate);

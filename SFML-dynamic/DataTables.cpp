@@ -28,7 +28,6 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #include "DataTables.h"
-#include "Projectile.h"
 
 namespace GEX
 {
@@ -73,16 +72,34 @@ namespace GEX
 
 		
 		data[Projectile::Type::AlliedBullet].damage = 10;
-		data[Projectile::Type::AlliedBullet].speed = 300.f;
+		data[Projectile::Type::AlliedBullet].speed = 500.f;
 		data[Projectile::Type::AlliedBullet].texture = TextureID::Bullet;
 
 		data[Projectile::Type::EnemyBullet].damage = 10;
-		data[Projectile::Type::EnemyBullet].speed = 300.f;
+		data[Projectile::Type::EnemyBullet].speed = 500.f;
 		data[Projectile::Type::EnemyBullet].texture = TextureID::Bullet;
 
 		data[Projectile::Type::Missile].damage = 200;
-		data[Projectile::Type::Missile].speed = 300.f;
+		data[Projectile::Type::Missile].speed = 250.f;
 		data[Projectile::Type::Missile].texture = TextureID::Missile;
+
+		return data;
+	}
+	std::map<Pickup::Type, PickupData> initializePickupData()
+	{
+		std::map<Pickup::Type, PickupData> data;
+
+		data[Pickup::Type::HealthRefill].texture = TextureID::HealthRefill;
+		data[Pickup::Type::HealthRefill].action = [](Aircraft& a) {a.repair(25); };
+
+		data[Pickup::Type::MissileRefill].texture = TextureID::MissileRefill;
+		data[Pickup::Type::MissileRefill].action = [](Aircraft& a) {a.collectMissiles(3); };
+
+		data[Pickup::Type::FireSpread].texture = TextureID::FireSpread;
+		data[Pickup::Type::FireSpread].action = [](Aircraft& a) {a.increaseFireSpread(); };
+
+		data[Pickup::Type::FireRate].texture = TextureID::FireRate;
+		data[Pickup::Type::FireRate].action = [](Aircraft& a) {a.increaseFireRate(); };
 
 		return data;
 	}

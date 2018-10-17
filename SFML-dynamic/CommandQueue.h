@@ -28,10 +28,6 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 
-///@file
-///
-///
-
 #pragma once
 #include "Command.h"
 #include <queue>

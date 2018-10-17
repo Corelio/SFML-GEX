@@ -103,6 +103,7 @@ namespace GEX
 			return Category::PlayerAircraft;
 			break;
 		case AircraftType::Raptor:
+		case AircraftType::Avenger:
 			return Category::EnemyAircraft;
 			break;
 		default:
@@ -137,6 +138,32 @@ namespace GEX
 	bool Aircraft::isAllied() const
 	{
 		return type_ == AircraftType::Eagle;
+	}
+
+	void Aircraft::increaseFireRate()
+	{
+		if (fireRateLevel_ < 10)
+		{
+			fireRateLevel_++;
+		}
+	}
+
+	void Aircraft::increaseFireSpread()
+	{
+		if (fireSpreadLevel_ < 3)
+		{
+			fireSpreadLevel_++;
+		}
+	}
+
+	void Aircraft::collectMissiles(unsigned int count)
+	{
+		missileAmmo_ += count;
+	}
+
+	sf::FloatRect Aircraft::getBoundingBox() const
+	{
+		return getWorldTransform().transformRect(sprite_.getGlobalBounds());
 	}
 
 	void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
@@ -215,7 +242,7 @@ namespace GEX
 		//at least those that are able to fire
 		if (!isAllied())
 		{
-			fire();
+			//fire();
 		}
 		
 		if (isFiring_ && fireCountdown_ <= sf::Time::Zero)

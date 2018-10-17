@@ -58,7 +58,13 @@ namespace GEX
 		void			launchMissile() { isLaunchingMissile_ = true; };
 
 		bool			isAllied() const;
+
+		void			increaseFireRate();
+		void			increaseFireSpread();
+		void			collectMissiles(unsigned int count);
 	
+		sf::FloatRect	getBoundingBox() const override;
+
 	protected:
 		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;
 

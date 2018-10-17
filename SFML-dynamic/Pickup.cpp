@@ -1,6 +1,6 @@
 /**
 * @file
-* Entity.h
+* Pickup.cpp
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,41 +27,30 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
-#pragma once
-#include "SceneNode.h"
+#include "Pickup.h"
+#include "Utility.h"
+#include "DataTables.h"
 
 namespace GEX
 {
-	class commandQueue;
 
-	class Entity : public SceneNode
+	namespace
 	{
-	public:
+		const std::map<Pickup::Type, PickupData> TABLE = initializePickupData();
+	}
 
-		explicit		Entity(int points);
+	Pickup::Pickup(Type type, const TextureManager& textures)
+		: Entity(1)
+		, type_(type)
+		, sprite_(textures.get(TABLE.at(type).texture))
+	{
+		centerOrigin(sprite_);
+	}
 
-		void			setVelocity(sf::Vector2f velocity);
-		void			setVelocity(float vx, float vy);
-		sf::Vector2f	getVelocity() const;
+	unsigned int Pickup::getCategory() const
+	{
+		return Category::Pickup;
+	}
 
-		void			accelerate(sf::Vector2f velocity);
-		void			accelerate(float vx, float vy);
 
-		//Hits
-		int				getHitpoints() const;
-		void			damage(int points);
-		void			repair(int points);
-		void			destroy(); //set hitpoints to 0
-		virtual bool	isDestroyed() const;
-
-	protected:
-		virtual void	updateCurrent(sf::Time dt, CommandQueue& Commands) override;
-
-	private:
-		sf::Vector2f	velocity_;
-		int				hitpoints_;
-
-	};
 }
-

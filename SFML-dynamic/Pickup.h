@@ -1,6 +1,6 @@
 /**
 * @file
-* Entity.h
+* Pickup.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,41 +27,33 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
 #pragma once
-#include "SceneNode.h"
+#include "Entity.h"
+#include "TextureManager.h";
 
 namespace GEX
 {
-	class commandQueue;
 
-	class Entity : public SceneNode
+	class Pickup : public Entity
 	{
 	public:
+		enum class Type
+		{
+			HealthRefill,
+			MissileRefill,
+			FireSpread,
+			FireRate
+		};
 
-		explicit		Entity(int points);
+	public:
+		Pickup(Type type, const TextureManager& textures);
+		~Pickup() = default;
 
-		void			setVelocity(sf::Vector2f velocity);
-		void			setVelocity(float vx, float vy);
-		sf::Vector2f	getVelocity() const;
-
-		void			accelerate(sf::Vector2f velocity);
-		void			accelerate(float vx, float vy);
-
-		//Hits
-		int				getHitpoints() const;
-		void			damage(int points);
-		void			repair(int points);
-		void			destroy(); //set hitpoints to 0
-		virtual bool	isDestroyed() const;
-
-	protected:
-		virtual void	updateCurrent(sf::Time dt, CommandQueue& Commands) override;
+		unsigned int	getCategory() const override;
+		sf::FloatRect	getBoundingRect();
 
 	private:
-		sf::Vector2f	velocity_;
-		int				hitpoints_;
-
+		Type				type_;
+		sf::Sprite			sprite_;
 	};
 }
-

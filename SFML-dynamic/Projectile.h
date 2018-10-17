@@ -51,6 +51,10 @@ namespace GEX
 
 		float				getMaxSpeed() const;
 		int					getDamage() const;
+		bool				isGuided() const;
+		void				guidedTowards(sf::Vector2f position);
+
+		sf::FloatRect		getBoundingBox() const override;
 
 	private:
 		void				updateCurrent(sf::Time dt, CommandQueue& commands) override;

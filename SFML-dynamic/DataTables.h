@@ -32,6 +32,7 @@
 #include "Aircraft.h"
 #include <map>
 #include "Projectile.h"
+#include "Pickup.h"
 
 namespace GEX
 {
@@ -64,6 +65,13 @@ namespace GEX
 		TextureID								texture;
 	};
 
+	struct PickupData
+	{
+		std::function<void(Aircraft&)>			action;
+		TextureID								texture;
+	};
+
 	std::map<AircraftType, AircraftData>		initializeAircraftData();
 	std::map<Projectile::Type, ProjectileData>	initializeProjectileData();
+	std::map<Pickup::Type, PickupData>			initializePickupData();
 }

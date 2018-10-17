@@ -67,6 +67,9 @@ namespace GEX
 		sf::Vector2f			getWorldPosition() const;
 		sf::Transform			getWorldTransform() const;
 
+		virtual sf::FloatRect	getBoundingBox() const;
+		void					drawBoundingBox(sf::RenderTarget& target, sf::RenderStates states) const;
+
 	private:
 		SceneNode*				parent_;
 		std::vector<Ptr>		children_;
@@ -83,6 +86,8 @@ namespace GEX
 		virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 		void					drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 	};
+
+	float distance(const SceneNode& lhs, const SceneNode& rhs);
 }
 
 
