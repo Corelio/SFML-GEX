@@ -35,6 +35,7 @@
 #include <SFML\Graphics\Drawable.hpp>
 #include <SFML\System\Time.hpp>
 #include "Category.h"
+#include <set>
 
 #include <vector>
 #include <memory>
@@ -50,6 +51,7 @@ namespace GEX
 	public:
 		//typedef std::unique_ptr<SceneNode> Ptr;
 		using Ptr = std::unique_ptr<SceneNode>;
+		using Pair = std::pair<SceneNode*, SceneNode*>;
 
 	public:
 		SceneNode(Category::Type category = Category::Type::None);
@@ -70,6 +72,11 @@ namespace GEX
 		virtual sf::FloatRect	getBoundingBox() const;
 		void					drawBoundingBox(sf::RenderTarget& target, sf::RenderStates states) const;
 
+		void					checkSceneCollision(SceneNode& rootNode, std::set<Pair>& collisionPair);
+		void					checkNodeCollision(SceneNode& node, std::set<Pair>& collisionPair);
+
+		virtual bool			isDestroyed() const;
+
 	private:
 		SceneNode*				parent_;
 		std::vector<Ptr>		children_;
@@ -88,6 +95,7 @@ namespace GEX
 	};
 
 	float distance(const SceneNode& lhs, const SceneNode& rhs);
+	bool  collision(const SceneNode& lhs, const SceneNode& rhs);
 }
 
 

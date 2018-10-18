@@ -28,7 +28,8 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #include "World.h"
-
+#include <set>
+#include "Pickup.h"
 
 namespace GEX
 {
@@ -81,13 +82,17 @@ namespace GEX
 		{
 			sceneGraph_.onCommand(commandQueue_.pop(), dt);
 		}
-		
+
+		//Handleling collisions
+		handleCollision();
+
 		adaptPlayerVelocity();
 		sceneGraph_.update(dt, commands);
 		adaptPlayerPosition();
 
 		//check if there are any enemy inside of the battlefield and spawn it
 		spawnEmenies();
+
 	}
 
 	void World::adaptPlayerPosition()
@@ -223,6 +228,63 @@ namespace GEX
 		activeEnemies_.clear();
 	}
 
+	bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
+	{
+		unsigned int category1 = colliders.first->getCategory();
+		unsigned int category2 = colliders.second->getCategory();
+
+		//Make sure first pair entry has category type1 and seconde has type2
+		if (type1 & category1 && type2 & category2)
+		{
+			return true;
+		}
+		
+		if(type1 & category2 && type1 & category1)
+		{
+			std::swap(colliders.first, colliders.second);
+			return true;
+		}
+		
+		return false;
+	
+	}
+
+	void World::handleCollision()
+	{
+		// Build a list of collinding Pairs of SceneNode
+		std::set<SceneNode::Pair> collisionPairs;
+
+		sceneGraph_.checkSceneCollision(sceneGraph_, collisionPairs);
+
+		for (auto collindingPair : collisionPairs)
+		{
+			if (matchesCategories(collindingPair, Category::PlayerAircraft, Category::EnemyAircraft))
+			{
+				auto& player = static_cast<Aircraft&>(*collindingPair.first);
+				auto& enemy	 = static_cast<Aircraft&>(*collindingPair.second);
+				player.damage(enemy.getHitpoints());
+				enemy.destroy();
+			}
+			else if (matchesCategories(collindingPair, Category::PlayerAircraft, Category::Pickup))
+			{
+				auto& player = static_cast<Aircraft&>(*collindingPair.first);
+				auto& pickup = static_cast<Pickup&>(*collindingPair.second);
+
+				pickup.apply(player);
+				pickup.destroy();
+			}
+			else if (matchesCategories(collindingPair, Category::PlayerAircraft, Category::EnemyProjectile) || matchesCategories(collindingPair, Category::EnemyAircraft, Category::AlliedProjectile))
+			{
+				auto& aircraft   = static_cast<Aircraft&>(*collindingPair.first);
+				auto& projectile = static_cast<Projectile&>(*collindingPair.second);
+
+				aircraft.damage(projectile.getDamage());
+				projectile.destroy();
+
+			}
+		}
+	}
+
 	void World::draw()
 	{
 		window_.setView(worldView_);
@@ -244,6 +306,10 @@ namespace GEX
 		textures_.load(GEX::TextureID::Avenger, "Media/Textures/Avenger.png");
 		textures_.load(GEX::TextureID::Bullet, "Media/Textures/Bullet.png");
 		textures_.load(GEX::TextureID::Missile, "Media/Textures/Missile.png");
+		textures_.load(GEX::TextureID::HealthRefill, "Media/Textures/HealthRefill.png");
+		textures_.load(GEX::TextureID::MissileRefill, "Media/Textures/MissileRefill.png");
+		textures_.load(GEX::TextureID::FireRate, "Media/Textures/FireRate.png");
+		textures_.load(GEX::TextureID::FireSpread, "Media/Textures/FireSpread.png");
 
 	}
 

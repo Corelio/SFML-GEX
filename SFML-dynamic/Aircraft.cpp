@@ -242,7 +242,7 @@ namespace GEX
 		//at least those that are able to fire
 		if (!isAllied())
 		{
-			//fire();
+			fire();
 		}
 		
 		if (isFiring_ && fireCountdown_ <= sf::Time::Zero)

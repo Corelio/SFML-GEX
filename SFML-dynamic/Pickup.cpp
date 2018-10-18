@@ -52,5 +52,25 @@ namespace GEX
 		return Category::Pickup;
 	}
 
+	sf::FloatRect Pickup::getBoundingBox() const
+	{
+		return getWorldTransform().transformRect(sprite_.getGlobalBounds());
+	}
+
+	void Pickup::apply(Aircraft & aircraft)
+	{
+		TABLE.at(type_).action(aircraft);
+	}
+
+	void Pickup::updateCurrent(sf::Time dt, CommandQueue & commands)
+	{
+		Entity::updateCurrent(dt, commands);
+	}
+
+	void Pickup::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const
+	{
+		target.draw(sprite_, states);
+	}
+
 
 }

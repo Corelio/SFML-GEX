@@ -73,6 +73,8 @@ namespace GEX
 
 		void						guideMissiles();
 
+		void						handleCollision();
+
 	private:
 		enum Layer
 		{
