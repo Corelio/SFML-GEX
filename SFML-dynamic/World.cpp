@@ -74,6 +74,9 @@ namespace GEX
 		//Remove previous velocity
 		player_->setVelocity(0.f, 0.f);
 
+		//Remove entities that are out of view
+		destroyEntitiesOutOfView();
+
 		//Process guided missile
 		guideMissiles();
 
@@ -85,6 +88,9 @@ namespace GEX
 
 		//Handleling collisions
 		handleCollision();
+
+		//remove all wrecks from the scene graph
+		sceneGraph_.removeWrecks();
 
 		adaptPlayerVelocity();
 		sceneGraph_.update(dt, commands);
@@ -120,22 +126,22 @@ namespace GEX
 
 	void World::addEnemies()
 	{
-		addEnemy(AircraftType::Raptor, -250.f, 300.f);
-		addEnemy(AircraftType::Raptor, 0.f, 300.f);
-		addEnemy(AircraftType::Raptor, +250.f, 300.f);
-
 		addEnemy(AircraftType::Raptor, -250.f, 600.f);
 		addEnemy(AircraftType::Raptor, 0.f, 600.f);
 		addEnemy(AircraftType::Raptor, +250.f, 600.f);
 
-		addEnemy(AircraftType::Avenger, -70.f, 500.f);
-		addEnemy(AircraftType::Avenger, 70.f, 500.f);
+		addEnemy(AircraftType::Raptor, -250.f, 900.f);
+		addEnemy(AircraftType::Raptor, 0.f, 900.f);
+		addEnemy(AircraftType::Raptor, +250.f, 900.f);
 
-		addEnemy(AircraftType::Avenger, -70.f, 900.f);
-		addEnemy(AircraftType::Avenger, 70.f, 900.f);
+		addEnemy(AircraftType::Avenger, -70.f, 800.f);
+		addEnemy(AircraftType::Avenger, 70.f, 800.f);
 
-		addEnemy(AircraftType::Avenger, -170.f, 1500.f);
-		addEnemy(AircraftType::Avenger, 170.f, 1500.f);
+		addEnemy(AircraftType::Avenger, -70.f, 1200.f);
+		addEnemy(AircraftType::Avenger, 70.f, 1200.f);
+
+		addEnemy(AircraftType::Avenger, -170.f, 1800.f);
+		addEnemy(AircraftType::Avenger, 170.f, 1800.f);
 		
 		//Sort the enemy vector by Y position
 		std::sort(enemySpawnPoints_.begin(), enemySpawnPoints_.end(),
@@ -158,12 +164,12 @@ namespace GEX
 		while (!enemySpawnPoints_.empty() && enemySpawnPoints_.back().y > getBattlefieldBounds().top) {
 
 			auto spawnPoint = enemySpawnPoints_.back();
-			enemySpawnPoints_.pop_back();
 			std::unique_ptr<Aircraft> enemy(new Aircraft(spawnPoint.type, textures_));
 			enemy->setPosition(spawnPoint.x, spawnPoint.y);
 			enemy->setVelocity(0.f, -scrollSpeed_);
 			enemy->rotate(180);
 			sceneLayers_[Air]->attachChild(std::move(enemy));
+			enemySpawnPoints_.pop_back();
 
 		}
 	}
@@ -238,8 +244,7 @@ namespace GEX
 		{
 			return true;
 		}
-		
-		if(type1 & category2 && type1 & category1)
+		else if(type1 & category2 && type2 & category1)
 		{
 			std::swap(colliders.first, colliders.second);
 			return true;
@@ -258,14 +263,14 @@ namespace GEX
 
 		for (auto collindingPair : collisionPairs)
 		{
-			if (matchesCategories(collindingPair, Category::PlayerAircraft, Category::EnemyAircraft))
+			if (matchesCategories(collindingPair, Category::Type::PlayerAircraft, Category::Type::EnemyAircraft))
 			{
 				auto& player = static_cast<Aircraft&>(*collindingPair.first);
 				auto& enemy	 = static_cast<Aircraft&>(*collindingPair.second);
 				player.damage(enemy.getHitpoints());
 				enemy.destroy();
 			}
-			else if (matchesCategories(collindingPair, Category::PlayerAircraft, Category::Pickup))
+			else if (matchesCategories(collindingPair, Category::Type::PlayerAircraft, Category::Type::Pickup))
 			{
 				auto& player = static_cast<Aircraft&>(*collindingPair.first);
 				auto& pickup = static_cast<Pickup&>(*collindingPair.second);
@@ -273,9 +278,9 @@ namespace GEX
 				pickup.apply(player);
 				pickup.destroy();
 			}
-			else if (matchesCategories(collindingPair, Category::PlayerAircraft, Category::EnemyProjectile) || matchesCategories(collindingPair, Category::EnemyAircraft, Category::AlliedProjectile))
+			else if (matchesCategories(collindingPair, Category::Type::PlayerAircraft, Category::Type::EnemyProjectile) || matchesCategories(collindingPair, Category::EnemyAircraft, Category::AlliedProjectile))
 			{
-				auto& aircraft   = static_cast<Aircraft&>(*collindingPair.first);
+  				auto& aircraft   = static_cast<Aircraft&>(*collindingPair.first);
 				auto& projectile = static_cast<Projectile&>(*collindingPair.second);
 
 				aircraft.damage(projectile.getDamage());
@@ -283,6 +288,22 @@ namespace GEX
 
 			}
 		}
+	}
+
+	void World::destroyEntitiesOutOfView()
+	{
+		Command command;
+		command.category = Category::Type::Projectile | Category::Type::EnemyAircraft;
+		command.action = derivedAction<Entity>([this](Entity& e, sf::Time dt) 
+		{
+			if (!getBattlefieldBounds().intersects(e.getBoundingBox()))
+			{
+				e.destroy();
+			}
+		});
+
+		commandQueue_.push(command);
+		
 	}
 
 	void World::draw()
@@ -294,6 +315,16 @@ namespace GEX
 	CommandQueue & World::getCommandQueue()
 	{
 		return commandQueue_;
+	}
+
+	bool World::hasAlivePlayer() const
+	{
+		return !player_->isMarkedForRemoval();
+	}
+
+	bool World::hasPlayerReachedEnd() const
+	{
+		return !worldBounds_.contains(player_->getPosition());
 	}
 
 	void World::loadTextures()

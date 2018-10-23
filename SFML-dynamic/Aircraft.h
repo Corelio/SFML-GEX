@@ -65,6 +65,8 @@ namespace GEX
 	
 		sf::FloatRect	getBoundingBox() const override;
 
+		bool			isMarkedForRemoval() const override;
+
 	protected:
 		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
@@ -82,6 +84,9 @@ namespace GEX
 		
 		void			checkProjectilelaunch(sf::Time dt, CommandQueue& commands);
 
+		void			checkPickupDrop(CommandQueue& command);
+		void			createPickup(SceneNode& node, TextureManager& texture);
+
 	private:
 		AircraftType	type_;
 		sf::Sprite		sprite_;
@@ -96,10 +101,12 @@ namespace GEX
 		int				fireSpreadLevel_;
 		sf::Time		fireCountdown_;
 		bool			isLaunchingMissile_;
+		bool			isMarkedForRemoval_;
 		int				missileAmmo_;
 
 		Command			fireCommand_;
 		Command			launchMissileCommand_;
+		Command			dropPickupCommand_;
 
 	};
 }

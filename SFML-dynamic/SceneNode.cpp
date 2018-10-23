@@ -33,6 +33,7 @@
 #include "Utility.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <functional>
 
 namespace GEX
 {
@@ -151,6 +152,19 @@ namespace GEX
 	bool SceneNode::isDestroyed() const
 	{
 		return false;
+	}
+
+	bool SceneNode::isMarkedForRemoval() const
+	{
+		return isDestroyed();
+	}
+
+	void SceneNode::removeWrecks()
+	{
+		auto wreckfieldBegin = std::remove_if(children_.begin(), children_.end(), std::mem_fn(&SceneNode::isMarkedForRemoval));
+		children_.erase(wreckfieldBegin, children_.end());
+
+		std::for_each(children_.begin(), children_.end(), std::mem_fn(&SceneNode::removeWrecks));
 	}
 
 	void SceneNode::updateCurrent(sf::Time dt, CommandQueue& commands)

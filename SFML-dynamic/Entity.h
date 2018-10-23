@@ -54,6 +54,7 @@ namespace GEX
 		void			repair(int points);
 		void			destroy(); //set hitpoints to 0
 		bool			isDestroyed() const override;
+		void			remove();
 
 	protected:
 		virtual void	updateCurrent(sf::Time dt, CommandQueue& Commands) override;

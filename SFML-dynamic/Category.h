@@ -44,5 +44,8 @@ namespace Category
 		AlliedProjectile	= 1 << 5,
 		AirSceneLayer		= 1 << 6,
 		Pickup				= 1 << 7,
+
+		Aircraft			= PlayerAircraft | EnemyAircraft | AlliedAircraft,
+		Projectile			= EnemyProjectile | AlliedProjectile
 	};
 }

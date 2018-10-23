@@ -38,7 +38,8 @@ namespace GEX
 		Menu,
 		Game,
 		Pause,
-		Gex
+		Gex,
+		GameOver
 	};
 
 }

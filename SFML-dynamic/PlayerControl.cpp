@@ -59,6 +59,7 @@ namespace GEX
 	};
 
 	PlayerControl::PlayerControl()
+		:currentMissionStatus_(MissionStatus::MissionRunning)
 	{
 		// Set up bindings
 		keyBindings_[sf::Keyboard::Left] = Action::MoveLeft;
@@ -98,6 +99,16 @@ namespace GEX
 				commands.push(actionBindings_.at(pair.second));
 			}
 		}
+	}
+
+	void PlayerControl::setMissionStatus(MissionStatus status)
+	{
+		currentMissionStatus_ = status;
+	}
+
+	MissionStatus PlayerControl::getMissionStatus() const
+	{
+		return currentMissionStatus_;
 	}
 
 	bool PlayerControl::isRealTimeAction(Action action)

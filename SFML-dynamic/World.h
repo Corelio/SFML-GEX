@@ -57,6 +57,8 @@ namespace GEX
 		void						draw();
 
 		CommandQueue&				getCommandQueue();
+		bool						hasAlivePlayer() const;
+		bool						hasPlayerReachedEnd() const;
 
 	private:
 		void						loadTextures();
@@ -74,6 +76,8 @@ namespace GEX
 		void						guideMissiles();
 
 		void						handleCollision();
+
+		void						destroyEntitiesOutOfView();
 
 	private:
 		enum Layer

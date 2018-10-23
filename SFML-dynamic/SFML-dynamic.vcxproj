@@ -126,6 +126,7 @@
     <ClCompile Include="DataTables.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GexState.cpp" />
     <ClCompile Include="MenuState.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="DataTables.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FontManager.h" />
+    <ClInclude Include="GameOverState.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GexState.h" />
     <ClInclude Include="MenuState.h" />

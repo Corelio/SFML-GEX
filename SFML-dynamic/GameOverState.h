@@ -1,6 +1,6 @@
 /**
 * @file
-* Pickup.h
+* GameOverState.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -28,40 +28,21 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #pragma once
-#include "Entity.h"
-#include "TextureManager.h"
-#include "Aircraft.h"
+#include "State.h"
 
-namespace GEX
+
+class GameOverState : public GEX::State
 {
+public:
+	GameOverState(GEX::StateStack& stack, Context context);
 
-	class Pickup : public Entity
-	{
-	public:
-		enum class Type
-		{
-			HealthRefill,
-			MissileRefill,
-			FireSpread,
-			FireRate,
-			Count
-		};
+	void					draw() override;
+	bool					update(sf::Time dt) override;
+	bool					handleEvent(const sf::Event& event) override;
 
-	public:
-		Pickup(Type type, const TextureManager& textures);
-		~Pickup() = default;
+private:
+	sf::Text				gameOverText_;
+	sf::Time				elapsedTime_; //Hold the time counter on this state
+	int						waitingTime_; //time to wait until reset the game and return to main screen
+};
 
-		unsigned int		getCategory() const override;
-		sf::FloatRect		getBoundingBox() const override;
-
-		void				apply(Aircraft& aircraft);
-	
-	private:
-		void				updateCurrent(sf::Time dt, CommandQueue& commands) override;
-		void				drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-	private:
-		Type				type_;
-		sf::Sprite			sprite_;
-	};
-}
