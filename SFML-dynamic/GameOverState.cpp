@@ -48,7 +48,7 @@ GameOverState::GameOverState(GEX::StateStack& stack, Context context)
 	}
 	else
 	{
-		gameOverText_.setString("Misson Success");
+		gameOverText_.setString("Mission Success");
 	}
 	gameOverText_.setCharacterSize(70);
 	centerOrigin(gameOverText_);
@@ -62,7 +62,7 @@ void GameOverState::draw()
 	window.setView(window.getDefaultView());
 
 	sf::RectangleShape backgroundShape;
-	backgroundShape.setFillColor(sf::Color(0, 0, 0, 150));
+	backgroundShape.setFillColor(sf::Color(0, 0, 0, 50));
 	backgroundShape.setSize(window.getView().getSize());
 
 	window.draw(backgroundShape);

@@ -120,10 +120,16 @@ namespace GEX
 
 	void Aircraft::updateTexts()
 	{
-		healthDisplay_->setText(std::to_string(getHitpoints()) + "HP");
+		sf::Color color = sf::Color::White;
+		if (getHitpoints() <= 20)
+		{
+			color = sf::Color::Red;
+		}
+
+		healthDisplay_->setText(std::to_string(getHitpoints()) + "HP", color);
 		healthDisplay_->setPosition(0.f, 50.f);
 		healthDisplay_->setRotation(-getRotation());
-		if (type_ == AircraftType::Eagle)
+		if (isAllied())
 		{
 			sf::Color color = sf::Color::Green;
 			if (missileAmmo_ <= 2) {
@@ -201,7 +207,7 @@ namespace GEX
 		{
 			if (travelDistance_ > directions.at(directionIndex_).distance)
 			{
-				directionIndex_ = (++directionIndex_) % directions.size();
+				directionIndex_ = (directionIndex_ + 1) % directions.size();
 				travelDistance_ = 0;
 			}
 
@@ -291,7 +297,7 @@ namespace GEX
 
 	void Aircraft::checkPickupDrop(CommandQueue & command)
 	{
-		if (!isAllied() && randomInt(3) == 0)
+		if (!isAllied() && randomInt(2) == 0)
 		{
 			command.push(dropPickupCommand_);
 		}

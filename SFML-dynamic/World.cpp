@@ -58,7 +58,7 @@ namespace GEX
 	void World::update(sf::Time dt, CommandQueue& commands)
 	{
 		// For fun!! Replacing the background when it world bounds ends
-		if (worldView_.getCenter().y - (worldView_.getSize().y / 2 - 50) < 50)
+		/*if (worldView_.getCenter().y - (worldView_.getSize().y / 2 - 50) < 50)
 		{
 			worldView_.setCenter(spawnPosition_);
 			player_->setPosition(player_->getPosition().x, player_->getPosition().y + worldBounds_.height - (worldView_.getSize().y));
@@ -67,7 +67,7 @@ namespace GEX
 			sf::IntRect			textureRect(worldBounds_);
 			texture.setRepeated(true);
 			background_->setSprite(texture, textureRect);
-		}
+		}*/
 		// scroll the world
 		worldView_.move(0.f, scrollSpeed_*dt.asSeconds());
 
@@ -293,7 +293,7 @@ namespace GEX
 	void World::destroyEntitiesOutOfView()
 	{
 		Command command;
-		command.category = Category::Type::Projectile | Category::Type::EnemyAircraft;
+		command.category = Category::Type::Projectile | Category::Type::EnemyAircraft | Category::Type::Pickup;
 		command.action = derivedAction<Entity>([this](Entity& e, sf::Time dt) 
 		{
 			if (!getBattlefieldBounds().intersects(e.getBoundingBox()))
@@ -319,7 +319,7 @@ namespace GEX
 
 	bool World::hasAlivePlayer() const
 	{
-		return !player_->isMarkedForRemoval();
+		return !player_->isDestroyed();
 	}
 
 	bool World::hasPlayerReachedEnd() const
