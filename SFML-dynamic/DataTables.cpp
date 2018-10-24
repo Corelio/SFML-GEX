@@ -114,7 +114,6 @@ namespace GEX
 		return data;
 	}
 
-	/*
 	std::map<Particle::Type, ParticleData> initializeParticleData()
 	{
 		std::map<Particle::Type, ParticleData> data;
@@ -127,5 +126,4 @@ namespace GEX
 
 		return data;
 	}
-	*/
 }

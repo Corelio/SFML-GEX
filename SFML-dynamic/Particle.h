@@ -1,6 +1,6 @@
 /**
 * @file
-* Category.h
+* Particle.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,26 +27,25 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
-
 #pragma once
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/System/Time.hpp>
 
-namespace Category
+namespace GEX
 {
-	enum Type
+	struct Particle
 	{
-		None				= 0 << 0,
-		Scene				= 1 << 0,
-		PlayerAircraft		= 1 << 1,
-		AlliedAircraft		= 1 << 2,
-		EnemyAircraft		= 1 << 3,
-		EnemyProjectile		= 1 << 4,
-		AlliedProjectile	= 1 << 5,
-		AirSceneLayer		= 1 << 6,
-		Pickup				= 1 << 7,
-		ParticleSystem		= 1 << 8,
+		enum class Type
+		{
+			Propellant,
+			Smoke,
+			ParticleCount
+		};
 
-		Aircraft			= PlayerAircraft | EnemyAircraft | AlliedAircraft,
-		Projectile			= EnemyProjectile | AlliedProjectile
+		sf::Vector2f	position;
+		sf::Color		color;
+		sf::Time		lifetime;
+
 	};
 }
