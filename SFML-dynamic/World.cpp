@@ -329,18 +329,10 @@ namespace GEX
 
 	void World::loadTextures()
 	{
-		textures_.load(GEX::TextureID::Eagle, "Media/Textures/Eagle.png");
-		textures_.load(GEX::TextureID::Raptor, "Media/Textures/Raptor.png");
-		textures_.load(GEX::TextureID::Airplanes, "Media/Textures/Eagles.png");
+		textures_.load(GEX::TextureID::Entities, "Media/Textures/Entities.png");
 		textures_.load(GEX::TextureID::Landscape, "Media/Textures/Desert.png");
 		textures_.load(GEX::TextureID::Space, "Media/Textures/Space.png");
-		textures_.load(GEX::TextureID::Avenger, "Media/Textures/Avenger.png");
-		textures_.load(GEX::TextureID::Bullet, "Media/Textures/Bullet.png");
-		textures_.load(GEX::TextureID::Missile, "Media/Textures/Missile.png");
-		textures_.load(GEX::TextureID::HealthRefill, "Media/Textures/HealthRefill.png");
-		textures_.load(GEX::TextureID::MissileRefill, "Media/Textures/MissileRefill.png");
-		textures_.load(GEX::TextureID::FireRate, "Media/Textures/FireRate.png");
-		textures_.load(GEX::TextureID::FireSpread, "Media/Textures/FireSpread.png");
+		textures_.load(GEX::TextureID::Jungle, "Media/Textures/JungleBig.png");
 
 	}
 
@@ -356,7 +348,7 @@ namespace GEX
 		}
 
 		// background
-		sf::Texture&		texture = textures_.get(TextureID::Landscape);
+		sf::Texture&		texture = textures_.get(TextureID::Jungle);
 		sf::IntRect			textureRect(worldBounds_);
 		texture.setRepeated(true);
 

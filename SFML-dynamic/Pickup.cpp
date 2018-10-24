@@ -42,7 +42,7 @@ namespace GEX
 	Pickup::Pickup(Type type, const TextureManager& textures)
 		: Entity(1)
 		, type_(type)
-		, sprite_(textures.get(TABLE.at(type).texture))
+		, sprite_(textures.get(TABLE.at(type).texture), TABLE.at(type).textureRect)
 	{
 		centerOrigin(sprite_);
 	}

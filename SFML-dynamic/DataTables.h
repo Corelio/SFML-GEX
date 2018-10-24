@@ -52,6 +52,7 @@ namespace GEX
 		int										hitpoints;
 		float									speed;
 		TextureID								texture;
+		sf::IntRect								textureRect;
 		sf::Time								fireInterval;
 		int										missileAmount;
 
@@ -63,15 +64,24 @@ namespace GEX
 		int										damage;
 		float									speed;
 		TextureID								texture;
+		sf::IntRect								textureRect;
 	};
 
 	struct PickupData
 	{
 		std::function<void(Aircraft&)>			action;
 		TextureID								texture;
+		sf::IntRect								textureRect;
+	};
+
+	struct ParticleData
+	{
+		sf::Color								color;
+		sf::Time								lifetime;
 	};
 
 	std::map<AircraftType, AircraftData>		initializeAircraftData();
 	std::map<Projectile::Type, ProjectileData>	initializeProjectileData();
 	std::map<Pickup::Type, PickupData>			initializePickupData();
+	//std::map<Particle::Type, ParticleData>		initializeParticleData();
 }
