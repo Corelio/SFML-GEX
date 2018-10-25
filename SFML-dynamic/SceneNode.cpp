@@ -124,7 +124,7 @@ namespace GEX
 		box.setOutlineColor(sf::Color::Cyan);
 		box.setOutlineThickness(1.f);
 
-		target.draw(box);
+		//target.draw(box);
 	}
 
 	void SceneNode::checkSceneCollision(SceneNode & rootNode, std::set<Pair>& collisionPair)

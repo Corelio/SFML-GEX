@@ -93,6 +93,9 @@
     <ClCompile Include="ParticleNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EmitterNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TextureManager.h">
@@ -182,8 +185,19 @@
     <ClInclude Include="ParticleNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EmitterNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SFML-dynamic.licenseheader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SFML-dynamic.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

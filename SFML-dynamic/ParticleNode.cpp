@@ -116,10 +116,11 @@ namespace GEX
 		sf::Vector2f half = size / 2.f;
 
 		// Refill vertex array
-		for (const Particle& p : particles_)
+		vertexArray_.clear();
+		for (auto& p : particles_)
 		{
 			sf::Vector2f pos = p.position;
-			sf::Color	color = p.color;
+			sf::Color color = p.color;
 
 			float ratio = p.lifetime.asSeconds() / TABLE.at(type_).lifetime.asSeconds();
 			color.a = static_cast<sf::Uint8>(255 * std::max(ratio, 0.f));

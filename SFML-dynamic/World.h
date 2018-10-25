@@ -83,7 +83,8 @@ namespace GEX
 		enum Layer
 		{
 			Background = 0,
-			Air,
+			LowerAir,
+			UpperAir,
 			LayerCount
 		};
 

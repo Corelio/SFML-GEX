@@ -31,6 +31,8 @@
 #include "DataTables.h"
 #include "Utility.h"
 #include "Category.h"
+#include <memory>
+#include "EmitterNode.h"
 
 namespace GEX
 {
@@ -46,6 +48,17 @@ namespace GEX
 		, sprite_(textures.get(TABLE.at(type).texture), TABLE.at(type).textureRect)
 	{
 		centerOrigin(sprite_);
+
+		if (isGuided())
+		{
+			std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Type::Smoke));
+			smoke->setPosition(0.f, Projectile::getBoundingBox().height / 2.f);
+			attachChild(std::move(smoke));
+
+			std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Type::Propellant));
+			propellant->setPosition(0.f, Projectile::getBoundingBox().height / 2.f);
+			attachChild(std::move(propellant));
+		}
 	}
 
 	unsigned int Projectile::getCategory() const
