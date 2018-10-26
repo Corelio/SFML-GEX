@@ -50,11 +50,12 @@ namespace GEX
 		, commandQueue_()
 	{
 		loadTextures();
-		buildScene();
 
 		//prepare the view
 
 		worldView_.setCenter(spawnPosition_);
+
+		buildScene();
 	}
 
 	void World::update(sf::Time dt, CommandQueue& commands)
@@ -374,7 +375,7 @@ namespace GEX
 		std::unique_ptr<Aircraft> leader(new Aircraft(AircraftType::Eagle, textures_));
 
 		leader->setPosition(spawnPosition_);
-		leader->setVelocity(50.f, scrollSpeed_*.3);
+		leader->setVelocity(50.f, scrollSpeed_);
 		player_ = leader.get();
 		sceneLayers_[UpperAir]->attachChild(std::move(leader));
 

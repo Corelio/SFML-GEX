@@ -41,6 +41,7 @@ namespace GEX
 		data[AircraftType::Eagle].textureRect = sf::IntRect(0, 0, 48, 64);
 		data[AircraftType::Eagle].fireInterval = sf::seconds(1);
 		data[AircraftType::Eagle].missileAmount = 12;
+		data[AircraftType::Eagle].hasRollAnimation = true;
 
 		//Raptor
 		data[AircraftType::Raptor].hitpoints = 20;
@@ -52,6 +53,7 @@ namespace GEX
 		data[AircraftType::Raptor].directions.emplace_back(Direction(45.f, 80.f));
 		data[AircraftType::Raptor].fireInterval = sf::Time::Zero;
 		data[AircraftType::Raptor].missileAmount = 0;
+		data[AircraftType::Raptor].hasRollAnimation = false;
 
 		//Avenger
 		data[AircraftType::Avenger].hitpoints = 40;
@@ -65,6 +67,7 @@ namespace GEX
 		data[AircraftType::Avenger].directions.emplace_back(Direction(45.f, 50.f));
 		data[AircraftType::Avenger].fireInterval = sf::seconds(4);
 		data[AircraftType::Avenger].missileAmount = 0;
+		data[AircraftType::Avenger].hasRollAnimation = false;
 
 		return data;
 	}

@@ -35,6 +35,7 @@
 #include <ctime>
 #include <cassert>
 
+
 // for microsoft compilers 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -65,6 +66,12 @@ void centerOrigin(sf::Text & text)
 {
 	sf::FloatRect bounds = text.getLocalBounds();
 	text.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+}
+
+void centerOrigin(GEX::Animation& animation)
+{
+	sf::FloatRect bounds = animation.getLocalBounds();
+	animation.setOrigin(std::floor(bounds.width / 2.f), std::floor(bounds.height / 2.f));
 }
 
 float toDegree(float radian)

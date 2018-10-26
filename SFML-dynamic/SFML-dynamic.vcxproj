@@ -120,6 +120,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aircraft.cpp" />
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Aplication.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
@@ -149,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Aircraft.h" />
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Aplication.h" />
     <ClInclude Include="Category.h" />
     <ClInclude Include="Command.h" />
