@@ -70,6 +70,8 @@ namespace GEX
 
 		void			remove();
 
+		void			updateLateralRoll(); //check and update the sprite if the airplane is moving on x axis
+
 	protected:
 		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;
 

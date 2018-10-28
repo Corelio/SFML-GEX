@@ -206,6 +206,24 @@ namespace GEX
 		showExplosion_ = false;
 	}
 
+	void Aircraft::updateLateralRoll()
+	{
+		if (TABLE.at(type_).hasRollAnimation)
+		{
+			auto textureRect = TABLE.at(type_).textureRect;
+			if (getVelocity().x < 0.f) // Turn left
+			{
+				textureRect.left = textureRect.width;
+			}
+			else if (getVelocity().x > 0.f) // Turn right
+			{
+				textureRect.left = 2 * textureRect.width;
+			}
+
+			sprite_.setTextureRect(textureRect);
+		}
+	}
+
 	void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 	{
 		checkProjectilelaunch(dt, commands);
@@ -218,6 +236,7 @@ namespace GEX
 		updateMovementPattern(dt);
 		Entity::updateCurrent(dt, commands);
 		updateTexts();
+		updateLateralRoll();
 		
 	}
 
