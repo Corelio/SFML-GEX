@@ -36,7 +36,7 @@ namespace GEX
 		std::map<AircraftType, AircraftData> data;
 		//Eagle
 		data[AircraftType::Eagle].hitpoints = 100;
-		data[AircraftType::Eagle].speed = 400.f;
+		data[AircraftType::Eagle].speed = 200.f;
 		data[AircraftType::Eagle].texture = TextureID::Entities;
 		data[AircraftType::Eagle].textureRect = sf::IntRect(0, 0, 48, 64);
 		data[AircraftType::Eagle].fireInterval = sf::seconds(1);

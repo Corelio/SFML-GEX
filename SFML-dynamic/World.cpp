@@ -125,6 +125,8 @@ namespace GEX
 		{
 			player_->setVelocity(velocity / std::sqrt(2.f));
 		}
+
+		player_->accelerate(0.f, scrollSpeed_);
 	}
 
 	void World::addEnemies()
