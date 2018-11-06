@@ -233,10 +233,14 @@ namespace GEX
 			explosion_.update(dt);
 			return;
 		}
-		updateMovementPattern(dt);
 		Entity::updateCurrent(dt, commands);
-		updateTexts();
-		updateLateralRoll();
+		if(!isDestroyed())
+		{
+			updateMovementPattern(dt);
+			updateTexts();
+			updateLateralRoll();
+		}
+		
 		
 	}
 

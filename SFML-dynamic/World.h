@@ -39,10 +39,11 @@
 #include <memory>
 #include <iostream>
 #include "CommandQueue.h"
+#include "BloomEffect.h"
 
 namespace sf  //Forward declaration - This class does not need to know about this class
 {
-	class RenderWindow;
+	class RenderTarget;
 }
 
 namespace GEX
@@ -51,7 +52,7 @@ namespace GEX
 	class World
 	{
 	public:
-		explicit					World(sf::RenderWindow& window);
+		explicit					World(sf::RenderTarget& window);
 
 		void						update(sf::Time dt, CommandQueue& commands);
 		void						draw();
@@ -104,7 +105,8 @@ namespace GEX
 	private:
 		const float					BORDER_DISTANCE = 40.f;
 
-		sf::RenderWindow&			window_;
+		sf::RenderTarget&			target_;
+		sf::RenderTexture			sceneTexture_;
 		sf::View					worldView_;
 		TextureManager				textures_;
 
@@ -126,6 +128,8 @@ namespace GEX
 		std::vector<SpawnPoint>		enemySpawnPoints_;
 
 		std::vector<Aircraft*>		activeEnemies_;
+
+		BloomEffect					bloomEffect_;
 
 	};
 

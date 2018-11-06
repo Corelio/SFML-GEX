@@ -32,13 +32,14 @@
 #include "Pickup.h"
 #include <memory>
 #include "ParticleNode.h"
+#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace GEX
 {
 
-	World::World(sf::RenderWindow& window)
-		: window_(window)
-		, worldView_(window.getDefaultView())
+	World::World(sf::RenderTarget& outputTarget)
+		: target_(outputTarget)
+		, worldView_(outputTarget.getDefaultView())
 		, textures_()
 		, sceneGraph_()
 		, sceneLayers_()
@@ -49,6 +50,9 @@ namespace GEX
 		, orientation_(1)
 		, commandQueue_()
 	{
+
+		sceneTexture_.create(target_.getSize().x, target_.getSize().y);
+
 		loadTextures();
 
 		//prepare the view
@@ -313,8 +317,20 @@ namespace GEX
 
 	void World::draw()
 	{
-		window_.setView(worldView_);
-		window_.draw(sceneGraph_);
+		if (PostEffect::isSupported())
+		{
+			// apply effects 
+			sceneTexture_.clear();
+			sceneTexture_.setView(worldView_);
+			sceneTexture_.draw(sceneGraph_);
+			sceneTexture_.display();
+			bloomEffect_.apply(sceneTexture_, target_);
+		}
+		else
+		{
+			target_.setView(worldView_);
+			target_.draw(sceneGraph_);
+		}
 	}
 
 	CommandQueue & World::getCommandQueue()
