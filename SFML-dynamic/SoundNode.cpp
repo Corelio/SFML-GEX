@@ -1,6 +1,6 @@
 /**
 * @file
-* State.cpp
+* SoundNode.cpp
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,55 +27,25 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-#include "State.h"
-#include "StateStack.h"
+#include "SoundNode.h"
+
 
 namespace GEX
 {
-	State::Context::Context(
-			sf::RenderWindow & window, 
-			TextureManager & texture, 
-			PlayerControl & player,
-			MusicPlayer& music,
-			SoundPlayer& sound
-	)
-		: window_(&window)
-		, textures_(&texture)
-		, player_(&player)
-		, music_(&music)
-		, sound_(&sound)
+
+	SoundNode::SoundNode(SoundPlayer& player)
+		: SceneNode()
+		, sounds_(player)
 	{
 	}
 
-	State::State(StateStack& stack, Context context)
-		: stack_(&stack)
-		, context_(context)
+	void SoundNode::playSound(SoundEffectID sound, sf::Vector2f position)
 	{
+		sounds_.play(sound, position);
 	}
 
-	State::~State()
+	unsigned int SoundNode::getCategory() const
 	{
+		return Category::SoundEffect;
 	}
-
-	void State::requestStackPush(StateID stateID)
-	{
-		stack_->pushState(stateID);
-	}
-
-	void State::requestStackPop()
-	{
-		stack_->popState();
-	}
-
-	void State::requestStackClear()
-	{
-		stack_->clearStates();
-	}
-
-	State::Context State::getContext() const
-	{
-		return context_;
-	}
-
-	
 }

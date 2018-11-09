@@ -1,6 +1,6 @@
 /**
 * @file
-* State.cpp
+* MusicPlayer.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,55 +27,31 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-#include "State.h"
-#include "StateStack.h"
+#pragma once
 
-namespace GEX
-{
-	State::Context::Context(
-			sf::RenderWindow & window, 
-			TextureManager & texture, 
-			PlayerControl & player,
-			MusicPlayer& music,
-			SoundPlayer& sound
-	)
-		: window_(&window)
-		, textures_(&texture)
-		, player_(&player)
-		, music_(&music)
-		, sound_(&sound)
+#include <SFML/Audio/Music.hpp>
+#include "ResourceIdentifier.h"
+#include <map>
+#include <string>
+
+namespace GEX {
+	class MusicPlayer
 	{
-	}
+	public:
+											MusicPlayer();
+											~MusicPlayer() = default;
+											MusicPlayer(const MusicPlayer&) = delete;
+		MusicPlayer&						operator=(const MusicPlayer&) = delete;
 
-	State::State(StateStack& stack, Context context)
-		: stack_(&stack)
-		, context_(context)
-	{
-	}
+		void								play(MusicID theme);
+		void								stop();
+		void								setPaused(bool paused);
+		void								setVolume(float volume);
 
-	State::~State()
-	{
-	}
+	private:
+		sf::Music							music_;
+		std::map<MusicID, std::string>		filenames_;
+		float								volume_;
+	};
 
-	void State::requestStackPush(StateID stateID)
-	{
-		stack_->pushState(stateID);
-	}
-
-	void State::requestStackPop()
-	{
-		stack_->popState();
-	}
-
-	void State::requestStackClear()
-	{
-		stack_->clearStates();
-	}
-
-	State::Context State::getContext() const
-	{
-		return context_;
-	}
-
-	
 }

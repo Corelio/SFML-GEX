@@ -50,6 +50,12 @@ PauseState::PauseState(GEX::StateStack& stack, Context context)
 	pauseText_.setPosition(0.5f * viewsize.x, 0.4f * viewsize.y);
 	instructionText_.setPosition(0.5f * viewsize.x, 0.6f * viewsize.y);
 
+	context.music_->setPaused(true);
+}
+
+PauseState::~PauseState()
+{
+	getContext().music_->setPaused(false);
 }
 
 //Draw pause state - Background and texts

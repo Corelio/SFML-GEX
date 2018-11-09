@@ -40,6 +40,7 @@
 #include <iostream>
 #include "CommandQueue.h"
 #include "BloomEffect.h"
+#include "SoundPlayer.h"
 
 namespace sf  //Forward declaration - This class does not need to know about this class
 {
@@ -52,7 +53,7 @@ namespace GEX
 	class World
 	{
 	public:
-		explicit					World(sf::RenderTarget& window);
+		explicit					World(sf::RenderTarget& window, SoundPlayer& sounds);
 
 		void						update(sf::Time dt, CommandQueue& commands);
 		void						draw();
@@ -79,6 +80,8 @@ namespace GEX
 		void						handleCollision();
 
 		void						destroyEntitiesOutOfView();
+
+		void						updateSound();
 
 	private:
 		enum Layer
@@ -109,6 +112,7 @@ namespace GEX
 		sf::RenderTexture			sceneTexture_;
 		sf::View					worldView_;
 		TextureManager				textures_;
+		SoundPlayer&				sounds_;
 
 		SceneNode					sceneGraph_;
 		std::vector<SceneNode*>		sceneLayers_;

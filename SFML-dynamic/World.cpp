@@ -33,12 +33,14 @@
 #include <memory>
 #include "ParticleNode.h"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include "SoundNode.h"
 
 namespace GEX
 {
 
-	World::World(sf::RenderTarget& outputTarget)
+	World::World(sf::RenderTarget& outputTarget, SoundPlayer& sounds)
 		: target_(outputTarget)
+		, sounds_(sounds)
 		, worldView_(outputTarget.getDefaultView())
 		, textures_()
 		, sceneGraph_()
@@ -105,6 +107,7 @@ namespace GEX
 
 		//check if there are any enemy inside of the battlefield and spawn it
 		spawnEmenies();
+		updateSound();
 
 	}
 
@@ -286,6 +289,9 @@ namespace GEX
 
 				pickup.apply(player);
 				pickup.destroy();
+
+				player_->playLocalSound(commandQueue_, SoundEffectID::CollectPickup);
+				
 			}
 			else if (matchesCategories(collindingPair, Category::Type::PlayerAircraft, Category::Type::EnemyProjectile) || matchesCategories(collindingPair, Category::EnemyAircraft, Category::AlliedProjectile))
 			{
@@ -313,6 +319,12 @@ namespace GEX
 
 		commandQueue_.push(command);
 		
+	}
+
+	void World::updateSound()
+	{
+		sounds_.setListenerPosition(player_->getWorldPosition());
+		sounds_.removeStoppedSounds();
 	}
 
 	void World::draw()
@@ -350,13 +362,13 @@ namespace GEX
 
 	void World::loadTextures()
 	{
-		textures_.load(GEX::TextureID::Entities, "Media/Textures/Entities.png");
-		textures_.load(GEX::TextureID::Landscape, "Media/Textures/Desert.png");
-		textures_.load(GEX::TextureID::Space, "Media/Textures/Space.png");
-		textures_.load(GEX::TextureID::Jungle, "Media/Textures/JungleBig.png");
-		textures_.load(GEX::TextureID::Particle, "Media/Textures/Particle.png");
-		textures_.load(GEX::TextureID::Explosion, "Media/Textures/Explosion.png");
-		textures_.load(GEX::TextureID::FinishLine, "Media/Textures/FinishLine.png");
+		textures_.load(GEX::TextureID::Entities,	"Media/Textures/Entities.png");
+		textures_.load(GEX::TextureID::Landscape,	"Media/Textures/Desert.png");
+		textures_.load(GEX::TextureID::Space,		"Media/Textures/Space.png");
+		textures_.load(GEX::TextureID::Jungle,		"Media/Textures/JungleBig.png");
+		textures_.load(GEX::TextureID::Particle,	"Media/Textures/Particle.png");
+		textures_.load(GEX::TextureID::Explosion,	"Media/Textures/Explosion.png");
+		textures_.load(GEX::TextureID::FinishLine,	"Media/Textures/FinishLine.png");
 	}
 
 	void World::buildScene()
@@ -369,6 +381,10 @@ namespace GEX
 			sceneLayers_.push_back(layer.get());
 			sceneGraph_.attachChild(std::move(layer));
 		}
+
+		// Sound Effects
+		std::unique_ptr<SoundNode> sNode(new SoundNode(sounds_));
+		sceneGraph_.attachChild(std::move(sNode));
 
 		//Particle System
 		std::unique_ptr<ParticleNode> smoke(new ParticleNode(Particle::Type::Smoke, textures_));

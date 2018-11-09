@@ -1,6 +1,6 @@
 /**
 * @file
-* State.h
+* SoundPlayer.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,62 +27,40 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-
 #pragma once
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Font.hpp>
-#include "TextureManager.h"
-#include "StatesIdentifiers.h"
+
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include "ResourceIdentifier.h"
+#include <SFML/System/Vector2.hpp>
+
+#include <map>
 #include <memory>
-#include "MusicPlayer.h"
-//#include "StateStack.h"
+#include <list>
+#include <string>
 
 namespace GEX
 {
-	//forward declarations
-	class PlayerControl;
-	class StateStack;
-	class SoundPlayer;
-
-	class State
+	class SoundPlayer
 	{
 	public:
-		typedef std::unique_ptr<State> Ptr;
-		struct Context
-		{
-			Context(sf::RenderWindow& window, 
-					TextureManager& texture, 
-					PlayerControl& playercontrol, 
-					MusicPlayer& music_, 
-					SoundPlayer& sound_
-			);
-
-			sf::RenderWindow*	window_;
-			TextureManager*		textures_;
-			PlayerControl*		player_;
-			MusicPlayer*		music_;
-			SoundPlayer*		sound_;
-
-		};
-	public:
-
-								State(StateStack& stack, Context context);
-		virtual					~State();
-
-		virtual void			draw() = 0;
-		virtual bool			update(sf::Time) = 0;
-		virtual bool			handleEvent(const sf::Event& event) = 0;
-
-	protected:
-		void					requestStackPush(StateID stateID);
-		void					requestStackPop();
-		void					requestStackClear();
-
-		Context					getContext() const;
+																	SoundPlayer();
+																	~SoundPlayer() = default;
+																	SoundPlayer(const SoundPlayer&) = delete;
+		SoundPlayer&												operator=(const SoundPlayer&) = delete;
+		void														play(SoundEffectID effect);
+		void														play(SoundEffectID effect, sf::Vector2f position);
+		void														removeStoppedSounds();
+		void														setListenerPosition(sf::Vector2f position);
+		sf::Vector2f												getListenerPosition() const;
 
 	private:
-		StateStack*				stack_;
-		Context					context_;
+		void														loadBuffer(SoundEffectID id, const std::string path);
+
+	private:
+		std::map<SoundEffectID, std::unique_ptr<sf::SoundBuffer>>	soundBuffers_;
+		std::list<sf::Sound>										sounds_;
+		float														volume_;
 	};
 }
 

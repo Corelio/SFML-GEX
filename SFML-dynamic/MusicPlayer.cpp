@@ -1,6 +1,6 @@
 /**
 * @file
-* State.cpp
+* MusicPlayer.cpp
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,55 +27,54 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-#include "State.h"
-#include "StateStack.h"
+#include "MusicPlayer.h"
 
-namespace GEX
-{
-	State::Context::Context(
-			sf::RenderWindow & window, 
-			TextureManager & texture, 
-			PlayerControl & player,
-			MusicPlayer& music,
-			SoundPlayer& sound
-	)
-		: window_(&window)
-		, textures_(&texture)
-		, player_(&player)
-		, music_(&music)
-		, sound_(&sound)
+
+namespace GEX {
+	MusicPlayer::MusicPlayer()
+		: music_()
+		, filenames_()
+		, volume_(25)
 	{
+		filenames_[MusicID::MissionTheme] = "Media/Music/MissionTheme.ogg";
+		filenames_[MusicID::MenuTheme] = "Media/Music/MenuTheme.ogg";
 	}
 
-	State::State(StateStack& stack, Context context)
-		: stack_(&stack)
-		, context_(context)
+	void MusicPlayer::play(MusicID theme)
 	{
+		if (!music_.openFromFile(filenames_.at(theme)))
+		{
+			throw std::runtime_error("Music could not open file");
+		}
+
+		music_.setVolume(volume_);
+		music_.setLoop(true);
+		music_.play();
 	}
 
-	State::~State()
+	void MusicPlayer::stop()
 	{
+		music_.stop();
 	}
 
-	void State::requestStackPush(StateID stateID)
+	void MusicPlayer::setPaused(bool paused)
 	{
-		stack_->pushState(stateID);
+		if(paused)
+		{
+			music_.pause();
+		}
+		else
+		{
+			music_.play();
+		}
 	}
 
-	void State::requestStackPop()
+	void MusicPlayer::setVolume(float volume)
 	{
-		stack_->popState();
+		volume_ = volume;
+		music_.setVolume(volume_);
 	}
 
-	void State::requestStackClear()
-	{
-		stack_->clearStates();
-	}
-
-	State::Context State::getContext() const
-	{
-		return context_;
-	}
 
 	
 }

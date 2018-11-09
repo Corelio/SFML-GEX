@@ -37,6 +37,8 @@
 #include "PlayerControl.h"
 #include "TextureManager.h"
 #include "StateStack.h"
+#include "MusicPlayer.h"
+#include "SoundPlayer.h"
 
 class Aplication
 {
@@ -59,6 +61,8 @@ private:
 	GEX::PlayerControl		player_;
 	GEX::TextureManager		textures_;
 	GEX::StateStack			stateStack_;
+	GEX::MusicPlayer		music_;
+	GEX::SoundPlayer		sound_;
 
 	sf::Text				statisticsText_;
 	sf::Time				statisticsUpdateTime_;

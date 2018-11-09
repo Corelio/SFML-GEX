@@ -34,6 +34,7 @@ class PauseState : public GEX::State
 {
 public:
 	PauseState(GEX::StateStack& stack, Context context);
+	~PauseState();
 
 	void					draw() override;
 	bool					update(sf::Time dt) override;

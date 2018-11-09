@@ -45,6 +45,7 @@ namespace Category
 		AirSceneLayer		= 1 << 6,
 		Pickup				= 1 << 7,
 		ParticleSystem		= 1 << 8,
+		SoundEffect			= 1 << 9,
 
 		Aircraft			= PlayerAircraft | EnemyAircraft | AlliedAircraft,
 		Projectile			= EnemyProjectile | AlliedProjectile

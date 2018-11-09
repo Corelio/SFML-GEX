@@ -72,6 +72,8 @@ namespace GEX
 
 		void			updateLateralRoll(); //check and update the sprite if the airplane is moving on x axis
 
+		void			playLocalSound(CommandQueue& commands, SoundEffectID effect);
+
 	protected:
 		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;
 
@@ -117,6 +119,8 @@ namespace GEX
 		Command			dropPickupCommand_;
 
 		bool			spawnPickup_;
+
+		bool			hasPlayedExplosionSound_;
 
 	};
 }
