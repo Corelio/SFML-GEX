@@ -41,7 +41,8 @@ namespace GEX
 		Jungle,
 		Explosion,
 		Particle,
-		FinishLine
+		FinishLine,
+		Chopper,
 	};
 
 	enum class FontID

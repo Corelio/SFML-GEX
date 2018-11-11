@@ -139,7 +139,7 @@ namespace GEX
 	void World::addEnemies()
 	{
 		addEnemy(AircraftType::Raptor, -250.f, 600.f);
-		addEnemy(AircraftType::Raptor, 0.f, 600.f);
+		addEnemy(AircraftType::Chopper, 0.f, 600.f);
 		addEnemy(AircraftType::Raptor, +250.f, 600.f);
 
 		addEnemy(AircraftType::Raptor, -250.f, 900.f);
@@ -147,7 +147,7 @@ namespace GEX
 		addEnemy(AircraftType::Raptor, +250.f, 900.f);
 
 		addEnemy(AircraftType::Avenger, -70.f, 800.f);
-		addEnemy(AircraftType::Avenger, 70.f, 800.f);
+		addEnemy(AircraftType::Chopper, 70.f, 800.f);
 
 		addEnemy(AircraftType::Avenger, -70.f, 1200.f);
 		addEnemy(AircraftType::Avenger, 70.f, 1200.f);
@@ -155,6 +155,11 @@ namespace GEX
 		addEnemy(AircraftType::Avenger, -170.f, 1800.f);
 		addEnemy(AircraftType::Avenger, 170.f, 1800.f);
 		
+		addEnemy(AircraftType::Chopper, -270.f, 2200.f);
+		addEnemy(AircraftType::Chopper, -170.f, 2200.f);
+		addEnemy(AircraftType::Chopper, 170.f, 2200.f);
+		addEnemy(AircraftType::Chopper, 270.f, 2200.f);
+
 		//Sort the enemy vector by Y position
 		std::sort(enemySpawnPoints_.begin(), enemySpawnPoints_.end(),
 			[] (SpawnPoint lhs, SpawnPoint rhs)
@@ -179,7 +184,7 @@ namespace GEX
 			std::unique_ptr<Aircraft> enemy(new Aircraft(spawnPoint.type, textures_));
 			enemy->setPosition(spawnPoint.x, spawnPoint.y);
 			enemy->setVelocity(0.f, -scrollSpeed_);
-			enemy->rotate(180);
+			if (spawnPoint.type != AircraftType::Chopper) { enemy->rotate(180); }
 			sceneLayers_[UpperAir]->attachChild(std::move(enemy));
 			enemySpawnPoints_.pop_back();
 
@@ -369,6 +374,7 @@ namespace GEX
 		textures_.load(GEX::TextureID::Particle,	"Media/Textures/Particle.png");
 		textures_.load(GEX::TextureID::Explosion,	"Media/Textures/Explosion.png");
 		textures_.load(GEX::TextureID::FinishLine,	"Media/Textures/FinishLine.png");
+		textures_.load(GEX::TextureID::Chopper,		"Media/Textures/Chopper.png");
 	}
 
 	void World::buildScene()

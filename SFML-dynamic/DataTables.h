@@ -57,6 +57,7 @@ namespace GEX
 		sf::Time								fireInterval;
 		int										missileAmount;
 		bool									hasRollAnimation;
+		bool									hasAnimation;
 
 		std::vector<Direction>					directions;
 	};

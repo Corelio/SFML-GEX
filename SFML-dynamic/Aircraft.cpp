@@ -55,6 +55,8 @@ namespace GEX
 		, sprite_(textures.get(TABLE.at(type).texture), TABLE.at(type).textureRect)
 		, explosion_(textures.get(TextureID::Explosion))
 		, showExplosion_(true)
+		, showMoviment_(TABLE.at(type).hasAnimation)
+		, moviment_(textures.get(TABLE.at(type).texture))
 		, healthDisplay_(nullptr)
 		, missileDisplay_(nullptr)
 		, travelDistance_(0.f)
@@ -70,6 +72,16 @@ namespace GEX
 		, isMarkedForRemoval_(false)
 		, hasPlayedExplosionSound_(false)
 	{
+
+		//Check for moviment animation
+		if (showMoviment_) {
+			moviment_.setFrameSize(sf::Vector2i(88, 84));
+			moviment_.setNumFrames(9);
+			moviment_.setDuration(sf::seconds(1));
+			moviment_.setRepeating(true);
+			centerOrigin(moviment_);
+
+		}
 
 		//Set up the explosion
 		explosion_.setFrameSize(sf::Vector2i(256, 256));
@@ -119,7 +131,14 @@ namespace GEX
 		}
 		else
 		{
-			target.draw(sprite_, states);
+			if (showMoviment_)
+			{
+				target.draw(moviment_, states);
+			}
+			else
+			{
+				target.draw(sprite_, states);
+			}
 		}
 	}
 
@@ -132,6 +151,7 @@ namespace GEX
 			break;
 		case AircraftType::Raptor:
 		case AircraftType::Avenger:
+		case AircraftType::Chopper:
 			return Category::EnemyAircraft;
 			break;
 		default:
@@ -263,6 +283,10 @@ namespace GEX
 			updateMovementPattern(dt);
 			updateTexts();
 			updateLateralRoll();
+			if (showMoviment_)
+			{
+				moviment_.update(dt);
+			}
 		}
 		
 		

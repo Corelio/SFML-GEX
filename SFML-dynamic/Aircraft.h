@@ -42,7 +42,7 @@ namespace GEX
 	class TextNode;
 
 	//Types of aircraft
-	enum class AircraftType { Eagle, Raptor, Avenger};
+	enum class AircraftType { Eagle, Raptor, Avenger, Chopper};
 
 	class Aircraft : public Entity
 	{
@@ -99,6 +99,8 @@ namespace GEX
 		sf::Sprite		sprite_;
 		Animation		explosion_;
 		bool			showExplosion_;
+		Animation		moviment_;
+		bool			showMoviment_;
 
 		TextNode*		healthDisplay_;
 		TextNode*		missileDisplay_;

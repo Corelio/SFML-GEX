@@ -67,7 +67,7 @@ Aplication::Aplication()
 }
 
 void Aplication::run()
-{
+ {
 	sf::Clock clock;
 
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;

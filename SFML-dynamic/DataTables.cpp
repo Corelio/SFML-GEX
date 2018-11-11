@@ -42,6 +42,7 @@ namespace GEX
 		data[AircraftType::Eagle].fireInterval = sf::seconds(1);
 		data[AircraftType::Eagle].missileAmount = 12;
 		data[AircraftType::Eagle].hasRollAnimation = true;
+		data[AircraftType::Eagle].hasAnimation = false;
 
 		//Raptor
 		data[AircraftType::Raptor].hitpoints = 20;
@@ -54,6 +55,7 @@ namespace GEX
 		data[AircraftType::Raptor].fireInterval = sf::Time::Zero;
 		data[AircraftType::Raptor].missileAmount = 0;
 		data[AircraftType::Raptor].hasRollAnimation = false;
+		data[AircraftType::Raptor].hasAnimation = false;
 
 		//Avenger
 		data[AircraftType::Avenger].hitpoints = 40;
@@ -68,6 +70,22 @@ namespace GEX
 		data[AircraftType::Avenger].fireInterval = sf::seconds(4);
 		data[AircraftType::Avenger].missileAmount = 0;
 		data[AircraftType::Avenger].hasRollAnimation = false;
+		data[AircraftType::Avenger].hasAnimation = false;
+
+		//Chopper
+		data[AircraftType::Chopper].hitpoints = 50;
+		data[AircraftType::Chopper].speed = 20.f;
+		data[AircraftType::Chopper].texture = TextureID::Chopper;
+		data[AircraftType::Chopper].textureRect = sf::IntRect(0, 0, 84, 88);
+		data[AircraftType::Chopper].directions.emplace_back(Direction(45.f, 50.f)); //Emplace back avooid create a temp object - saves resources
+		data[AircraftType::Chopper].directions.emplace_back(Direction(0.f, 50.f));
+		data[AircraftType::Chopper].directions.emplace_back(Direction(-45.f, 100.f));
+		data[AircraftType::Chopper].directions.emplace_back(Direction(0.f, 50.f));
+		data[AircraftType::Chopper].directions.emplace_back(Direction(45.f, 50.f));
+		data[AircraftType::Chopper].fireInterval = sf::seconds(2);
+		data[AircraftType::Chopper].missileAmount = 0;
+		data[AircraftType::Chopper].hasRollAnimation = false;
+		data[AircraftType::Chopper].hasAnimation = true;
 
 		return data;
 	}

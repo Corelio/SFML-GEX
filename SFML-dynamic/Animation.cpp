@@ -40,6 +40,7 @@ namespace GEX
 		, elapsedTime_(sf::Time::Zero)
 		, repeat_(false)
 	{
+		sprite_.setTextureRect(sf::IntRect());
 	}
 
 	Animation::Animation(const sf::Texture & texture)
@@ -51,6 +52,7 @@ namespace GEX
 		, elapsedTime_(sf::Time::Zero)
 		, repeat_(false)
 	{
+		sprite_.setTextureRect(sf::IntRect());
 	}
 
 	void Animation::setTexture(const sf::Texture& texture)
