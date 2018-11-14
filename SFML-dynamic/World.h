@@ -41,6 +41,7 @@
 #include "CommandQueue.h"
 #include "BloomEffect.h"
 #include "SoundPlayer.h"
+#include "Zombie.h"
 
 namespace sf  //Forward declaration - This class does not need to know about this class
 {
@@ -71,6 +72,10 @@ namespace GEX
 		void						addEnemies();
 		void						addEnemy(AircraftType type, float relX, float relY);
 		void						spawnEmenies();
+
+		void						addZombies();
+		void						addZombie(ZombieType type, float relX, float relY);
+		void						spawnZombies();
 
 		sf::FloatRect				getViewBounds() const;
 		sf::FloatRect				getBattlefieldBounds() const;
@@ -105,35 +110,49 @@ namespace GEX
 			float					y;
 		};
 
+		struct ZombieSpawnPoint
+		{
+			ZombieSpawnPoint(ZombieType _type, float _x, float _y)
+				: type(_type)
+				, x(_x)
+				, y(_y)
+			{}
+
+			ZombieType				type;
+			float					x;
+			float					y;
+		};
+
 	private:
-		const float					BORDER_DISTANCE = 40.f;
+		const float						BORDER_DISTANCE = 40.f;
 
-		sf::RenderTarget&			target_;
-		sf::RenderTexture			sceneTexture_;
-		sf::View					worldView_;
-		TextureManager				textures_;
-		SoundPlayer&				sounds_;
+		sf::RenderTarget&				target_;
+		sf::RenderTexture				sceneTexture_;
+		sf::View						worldView_;
+		TextureManager					textures_;
+		SoundPlayer&					sounds_;
 
-		SceneNode					sceneGraph_;
-		std::vector<SceneNode*>		sceneLayers_;
+		SceneNode						sceneGraph_;
+		std::vector<SceneNode*>			sceneLayers_;
 
-		sf::FloatRect				worldBounds_;
-		sf::Vector2f				spawnPosition_;
-		float						scrollSpeed_;
-		int							counter_;
-		int							orientation_;
-		Aircraft*					player_;
-		Aircraft*					leftAircraft_;
-		Aircraft*					rightAircraft_;
-		SpriteNode*					background_;
+		sf::FloatRect					worldBounds_;
+		sf::Vector2f					spawnPosition_;
+		float							scrollSpeed_;
+		int								counter_;
+		int								orientation_;
+		Aircraft*						player_;
+		Aircraft*						leftAircraft_;
+		Aircraft*						rightAircraft_;
+		SpriteNode*						background_;
 
-		CommandQueue				commandQueue_;
+		CommandQueue					commandQueue_;
 
-		std::vector<SpawnPoint>		enemySpawnPoints_;
+		std::vector<SpawnPoint>			enemySpawnPoints_;
+		std::vector<ZombieSpawnPoint>	zombieSpawnPoints_;
 
-		std::vector<Aircraft*>		activeEnemies_;
+		std::vector<Aircraft*>			activeEnemies_;
 
-		BloomEffect					bloomEffect_;
+		BloomEffect						bloomEffect_;
 
 	};
 

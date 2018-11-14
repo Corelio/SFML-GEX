@@ -34,6 +34,7 @@
 #include "ParticleNode.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "SoundNode.h"
+#include "Utility.h"
 
 namespace GEX
 {
@@ -107,6 +108,7 @@ namespace GEX
 
 		//check if there are any enemy inside of the battlefield and spawn it
 		spawnEmenies();
+		spawnZombies();
 		updateSound();
 
 	}
@@ -187,6 +189,45 @@ namespace GEX
 			if (spawnPoint.type != AircraftType::Chopper) { enemy->rotate(180); }
 			sceneLayers_[UpperAir]->attachChild(std::move(enemy));
 			enemySpawnPoints_.pop_back();
+
+		}
+	}
+
+	void World::addZombies()
+	{
+		for (int i = 0; i < 20; i++)
+		{
+			addZombie(ZombieType::Zombie1, 
+				static_cast<float>(randomInt(2) == 1 ? randomInt(400) : -1 * randomInt(400)),
+				static_cast<float>(randomInt(3000)));
+		}
+
+		//Sort the zombie vector by Y position
+		std::sort(zombieSpawnPoints_.begin(), zombieSpawnPoints_.end(),
+			[](ZombieSpawnPoint lhs, ZombieSpawnPoint rhs)
+		{
+			return lhs.y < rhs.y;
+		}
+		);
+
+	}
+
+	void World::addZombie(ZombieType type, float relX, float relY)
+	{
+		zombieSpawnPoints_.push_back(ZombieSpawnPoint(type, spawnPosition_.x + relX, spawnPosition_.y - relY));
+	}
+
+	void World::spawnZombies()
+	{
+		//Check if the vector is not empty and the last element is inside of the battlegrounds
+		while (!zombieSpawnPoints_.empty() && zombieSpawnPoints_.back().y > getBattlefieldBounds().top) {
+
+			auto spawnPoint = zombieSpawnPoints_.back();
+			std::unique_ptr<Zombie> enemy(new Zombie(spawnPoint.type, textures_));
+			enemy->setPosition(spawnPoint.x, spawnPoint.y);
+			enemy->setVelocity(0.f, -scrollSpeed_);
+			sceneLayers_[UpperAir]->attachChild(std::move(enemy));
+			zombieSpawnPoints_.pop_back();
 
 		}
 	}
@@ -298,12 +339,28 @@ namespace GEX
 				player_->playLocalSound(commandQueue_, SoundEffectID::CollectPickup);
 				
 			}
+			else if (matchesCategories(collindingPair, Category::Type::PlayerAircraft, Category::Type::Zombie))
+			{
+				auto& player = static_cast<Aircraft&>(*collindingPair.first);
+				auto& zombie = static_cast<Zombie&>(*collindingPair.second);
+				zombie.destroy();
+
+			}
 			else if (matchesCategories(collindingPair, Category::Type::PlayerAircraft, Category::Type::EnemyProjectile) || matchesCategories(collindingPair, Category::EnemyAircraft, Category::AlliedProjectile))
 			{
   				auto& aircraft   = static_cast<Aircraft&>(*collindingPair.first);
 				auto& projectile = static_cast<Projectile&>(*collindingPair.second);
 
 				aircraft.damage(projectile.getDamage());
+				projectile.destroy();
+
+			}
+			else if (matchesCategories(collindingPair, Category::Zombie, Category::AlliedProjectile))
+			{
+				auto& zombie = static_cast<Zombie&>(*collindingPair.first);
+				auto& projectile = static_cast<Projectile&>(*collindingPair.second);
+
+				zombie.destroy();
 				projectile.destroy();
 
 			}
@@ -375,6 +432,7 @@ namespace GEX
 		textures_.load(GEX::TextureID::Explosion,	"Media/Textures/Explosion.png");
 		textures_.load(GEX::TextureID::FinishLine,	"Media/Textures/FinishLine.png");
 		textures_.load(GEX::TextureID::Chopper,		"Media/Textures/Chopper.png");
+		textures_.load(GEX::TextureID::Zombie1,		"Media/Textures/Zombie1.png");
 	}
 
 	void World::buildScene()
@@ -420,6 +478,7 @@ namespace GEX
 		sceneLayers_[UpperAir]->attachChild(std::move(leader));
 
 		addEnemies();
+		addZombies();
 
 		
 	}

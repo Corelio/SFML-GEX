@@ -1,6 +1,6 @@
 /**
 * @file
-* Utility.h
+* Animation2.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -28,30 +28,45 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #pragma once
-#include <SFML/System/Vector2.hpp>
-#include "Animation.h"
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <vector>
 
-namespace sf
+using Frame = sf::IntRect;
+
+namespace GEX
 {
-	class Sprite;
-	class Text;
+	class Animation2
+	{
+	public:
+		//Constructors
+		explicit			Animation2(bool repeat = true);
+
+		//Getters and setters
+		void				addFrame(Frame frame);
+		void				addFrameSet(std::vector<Frame> frames);
+		void				setDuration(sf::Time time);
+		sf::Time			getDuration() const;
+		void				setRepeating(bool repeat);
+		bool				isRepeating() const;
+
+		//Methods
+		void				restart();
+		bool				isFinished() const;
+
+		Frame				getCurrentFrame() const;
+
+		Frame				update(sf::Time dt);
+
+	private:
+		std::vector<Frame>	frames_;
+		std::size_t			currentFrame_;
+		sf::Time			duration_;
+		sf::Time			elapsedTime_;
+		bool				repeat_;
+	};
 }
 
-void centerOrigin(sf::Sprite& sprite);
-void centerOrigin(sf::Text& text);
-void centerOrigin(GEX::Animation& animation);
-
-// Degree/radian conversion
-float			toDegree(float radian);
-float			toRadian(float degree);
-
-// Random number generation
-int				randomInt(int exclusiveMax);
-
-// Vector operations
-float			length(sf::Vector2f vector);
-sf::Vector2f	unitVector(sf::Vector2f vector);
-
-//Rectangle flip left right
-sf::IntRect flip(const sf::IntRect& rec);
 

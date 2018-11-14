@@ -101,3 +101,11 @@ sf::Vector2f unitVector(sf::Vector2f vector)
 
 	return vector / length(vector);
 }
+
+sf::IntRect flip(const sf::IntRect& rec)
+{
+	auto temp = rec;
+	temp.left += temp.width;
+	temp.width *= -1;
+	return temp;
+}

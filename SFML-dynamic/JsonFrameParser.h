@@ -1,6 +1,6 @@
-/**
+﻿/**
 * @file
-* Utility.h
+* JsonFrameParser.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -28,30 +28,47 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #pragma once
-#include <SFML/System/Vector2.hpp>
-#include "Animation.h"
 
-namespace sf
+#include "json.hpp"
+#include <vector>
+#include <SFML/Graphics/Rect.hpp>
+
+using nlohmann::json;
+
+struct IntRect {
+
+	IntRect(int l, int t, int w, int h) : left(l), top(t), width(w), height(h) {}
+	int left;
+	int top;
+	int width;
+	int height;
+};
+
+class JsonFrameParser
 {
-	class Sprite;
-	class Text;
-}
+public:
+									/**
+									* Construct a jason frame parser object
+									*
+									* @param[in] path path to texture atlas
+									*/
+									JsonFrameParser(std::string path);
 
-void centerOrigin(sf::Sprite& sprite);
-void centerOrigin(sf::Text& text);
-void centerOrigin(GEX::Animation& animation);
+									/**
+									* Return set of texture Rectangles for the named
+									* animation. 
+									* 
+									* @param animationName the name of the animation, must match 
+									*		 the begining of the name string for the animation in the 
+									*		 json file.
+									*
+									* @return vector of Frames that make up the animation 
+									*/
+	std::vector<sf::IntRect>        getFramesFor(std::string animationName) const;
 
-// Degree/radian conversion
-float			toDegree(float radian);
-float			toRadian(float degree);
+private:
+	json              json_;
+};
 
-// Random number generation
-int				randomInt(int exclusiveMax);
 
-// Vector operations
-float			length(sf::Vector2f vector);
-sf::Vector2f	unitVector(sf::Vector2f vector);
-
-//Rectangle flip left right
-sf::IntRect flip(const sf::IntRect& rec);
 

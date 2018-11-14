@@ -43,6 +43,7 @@ namespace GEX
 		Particle,
 		FinishLine,
 		Chopper,
+		Zombie1,
 	};
 
 	enum class FontID

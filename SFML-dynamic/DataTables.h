@@ -34,6 +34,8 @@
 #include "Projectile.h"
 #include "Pickup.h"
 #include "Particle.h"
+#include "Zombie.h"
+#include "Animation2.h"
 
 namespace GEX
 {
@@ -83,8 +85,21 @@ namespace GEX
 		sf::Time								lifetime;
 	};
 
+	struct ZombieData
+	{
+		int										hitpoints;
+		int										damageDone;
+		float									speed;
+		bool									follows;
+		TextureID								texture;
+		std::map<Zombie::State, Animation2>		animations;
+
+		std::vector<Direction>					directions;
+	};
+
 	std::map<AircraftType, AircraftData>		initializeAircraftData();
 	std::map<Projectile::Type, ProjectileData>	initializeProjectileData();
 	std::map<Pickup::Type, PickupData>			initializePickupData();
 	std::map<Particle::Type, ParticleData>		initializeParticleData();
+	std::map<ZombieType, ZombieData>			initializeZombieData();
 }

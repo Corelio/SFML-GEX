@@ -28,6 +28,7 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #include "DataTables.h"
+#include "JsonFrameParser.h"
 
 namespace GEX
 {
@@ -144,6 +145,41 @@ namespace GEX
 
 		data[Particle::Type::Smoke].color = sf::Color(50, 50, 50);
 		data[Particle::Type::Smoke].lifetime = sf::seconds(3.f);
+
+		return data;
+	}
+
+	std::map<GEX::ZombieType, GEX::ZombieData> GEX::initializeZombieData()
+	{
+		std::map<ZombieType, ZombieData> data;
+
+		data[ZombieType::Zombie1].texture = TextureID::Zombie1;
+		data[ZombieType::Zombie1].hitpoints = 100;
+		data[ZombieType::Zombie1].damageDone = 1;
+		data[ZombieType::Zombie1].speed = 50;
+		data[ZombieType::Zombie1].follows = true;
+
+		JsonFrameParser frames = JsonFrameParser("Media/Textures/zombie1.json");
+
+		data[ZombieType::Zombie1].animations[Zombie::State::Idle].addFrameSet(frames.getFramesFor("idle"));
+		data[ZombieType::Zombie1].animations[Zombie::State::Idle].setDuration(sf::Time(sf::seconds(1.f)));
+		data[ZombieType::Zombie1].animations[Zombie::State::Idle].setRepeating(true);
+		data[ZombieType::Zombie1].animations[Zombie::State::Attack].addFrameSet(frames.getFramesFor("attack"));
+		data[ZombieType::Zombie1].animations[Zombie::State::Attack].setDuration(sf::Time(sf::seconds(1.f)));
+		data[ZombieType::Zombie1].animations[Zombie::State::Attack].setRepeating(true);
+		data[ZombieType::Zombie1].animations[Zombie::State::Walk].addFrameSet(frames.getFramesFor("walk"));
+		data[ZombieType::Zombie1].animations[Zombie::State::Walk].setDuration(sf::Time(sf::seconds(1.f)));
+		data[ZombieType::Zombie1].animations[Zombie::State::Walk].setRepeating(true);
+		data[ZombieType::Zombie1].animations[Zombie::State::Dead].addFrameSet(frames.getFramesFor("dead"));
+		data[ZombieType::Zombie1].animations[Zombie::State::Dead].setDuration(sf::Time(sf::seconds(1.f)));
+		data[ZombieType::Zombie1].animations[Zombie::State::Dead].setRepeating(false);
+		data[ZombieType::Zombie1].animations[Zombie::State::Rise].addFrameSet(frames.getFramesFor("rise"));
+		data[ZombieType::Zombie1].animations[Zombie::State::Rise].setDuration(sf::Time(sf::seconds(1.f)));
+		data[ZombieType::Zombie1].animations[Zombie::State::Rise].setRepeating(false);
+			 
+		data[ZombieType::Zombie1].directions.emplace_back(Direction(45.f, 50.f));
+		data[ZombieType::Zombie1].directions.emplace_back(Direction(-45.f, 100.f));
+		data[ZombieType::Zombie1].directions.emplace_back(Direction(45.f, 50.f));
 
 		return data;
 	}

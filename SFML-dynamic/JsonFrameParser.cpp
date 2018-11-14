@@ -1,6 +1,6 @@
-/**
+﻿/**
 * @file
-* Utility.h
+* JsonFrameParser.cpp
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -27,31 +27,37 @@
 * I certify that this work is solely my own and complies with
 * NBCC Academic Integrity Policy (policy 1111)
 */
-#pragma once
-#include <SFML/System/Vector2.hpp>
-#include "Animation.h"
+#include "JsonFrameParser.h"
+#include <fstream>
+#include <iostream>
 
-namespace sf
+using json = nlohmann::json;
+
+
+JsonFrameParser::JsonFrameParser(std::string path)
 {
-	class Sprite;
-	class Text;
+	std::ifstream ifs(path);
+	json_ = json::parse(ifs);
 }
 
-void centerOrigin(sf::Sprite& sprite);
-void centerOrigin(sf::Text& text);
-void centerOrigin(GEX::Animation& animation);
+std::vector<sf::IntRect>  JsonFrameParser::getFramesFor(std::string animationName) const
+{
+	std::vector<sf::IntRect> data; // frame textRecs for animaionName in atlas
 
-// Degree/radian conversion
-float			toDegree(float radian);
-float			toRadian(float degree);
+	json k = json_["frames"];
 
-// Random number generation
-int				randomInt(int exclusiveMax);
+	for (auto i : k)
+	{
 
-// Vector operations
-float			length(sf::Vector2f vector);
-sf::Vector2f	unitVector(sf::Vector2f vector);
+		std::string tmpStr = i["filename"]; // animation name is the first part of "filename" string
+		if (tmpStr.compare(0, animationName.size(), animationName) == 0)
+		{
+			data.push_back(sf::IntRect(i["frame"]["x"],
+				i["frame"]["y"],
+				i["frame"]["w"],
+				i["frame"]["h"]));
+		}
+	}
 
-//Rectangle flip left right
-sf::IntRect flip(const sf::IntRect& rec);
-
+	return data;
+}
