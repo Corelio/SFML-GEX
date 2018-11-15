@@ -133,6 +133,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GexState.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
     <ClCompile Include="ParticleNode.cpp" />
     <ClCompile Include="PauseState.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GexState.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="Mushroom.h" />
     <ClInclude Include="MusicPlayer.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleNode.h" />

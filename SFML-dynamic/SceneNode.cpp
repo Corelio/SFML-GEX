@@ -102,6 +102,9 @@ namespace GEX
 		
 		for (const SceneNode* node = this; node != nullptr; node = node->parent_)
 		{
+			if (node == nullptr) {
+				return sf::Transform();
+			}
 			transform *= node->getTransform();
 		}
 

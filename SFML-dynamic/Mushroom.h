@@ -1,6 +1,6 @@
 /**
 * @file
-* ResourceIdentifier.h
+* Mushroom.h
 * @author
 * Marco Corsini Baccaro 2018
 * @version 1.0
@@ -28,42 +28,49 @@
 * NBCC Academic Integrity Policy (policy 1111)
 */
 #pragma once
+#include "Entity.h"
+#include <SFML/Graphics/Sprite.hpp>
+#include "TextureManager.h"
+#include "Command.h"
+#include "Animation.h"
 
-namespace GEX
-{
-	enum class TextureID
+namespace GEX {
+
+	enum class MushroomType { Mushroom1 };
+
+	class Mushroom : public Entity
 	{
-		Landscape,
-		Space,
-		TitleScreen,
-		Face,
-		Entities,
-		Jungle,
-		Explosion,
-		Particle,
-		FinishLine,
-		Mushroom,
+	public:
+		explicit		Mushroom(MushroomType type, TextureManager& textures);
+
+		virtual void	drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+		unsigned int	getCategory() const override;
+
+		sf::FloatRect	getBoundingBox() const override;
+
+		bool			isMarkedForRemoval() const override;
+
+		void			remove();
+		
+	protected:
+		void			updateCurrent(sf::Time dt, CommandQueue& commands) override;
+
+	private:
+		void			updateMovementPattern(sf::Time dt);
+		float			getMaxSpeed() const;
+
+	private:
+		MushroomType	type_;
+		sf::Sprite		sprite_;
+		Animation		explosion_;
+		bool			showExplosion_;
+		Animation		moviment_;
+		float			travelDistance_;
+		std::size_t		directionIndex_;
+		bool			isMarkedForRemoval_;
+
 	};
 
-	enum class FontID
-	{
-		Main
-	};
-
-	enum class MusicID
-	{
-		MenuTheme,
-		MissionTheme,
-	};
-
-	enum class SoundEffectID
-	{
-		AlliedGunfire,
-		EnemyGunfire,
-		Explosion1,
-		Explosion2,
-		LaunchMissile,
-		CollectPickup,
-		Button,
-	};
 }
+

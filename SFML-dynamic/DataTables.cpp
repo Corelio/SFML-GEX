@@ -129,4 +129,23 @@ namespace GEX
 
 		return data;
 	}
+
+	std::map<MushroomType, MushroomData> initializeMushroomData()
+	{
+		std::map<MushroomType, MushroomData> data;
+
+		//Mushroom1
+		data[MushroomType::Mushroom1].hitpoints = 40;
+		data[MushroomType::Mushroom1].speed = 50.f;
+		data[MushroomType::Mushroom1].texture = TextureID::Mushroom;
+		data[MushroomType::Mushroom1].textureRect = sf::IntRect(0, 0, 64, 64);
+		data[MushroomType::Mushroom1].directions.emplace_back(Direction(80.f, 0.f)); //Emplace back avooid create a temp object - saves resources
+		/*data[MushroomType::Mushroom1].directions.emplace_back(Direction(0.f, 50.f));
+		data[MushroomType::Mushroom1].directions.emplace_back(Direction(-45.f, 100.f));
+		data[MushroomType::Mushroom1].directions.emplace_back(Direction(0.f, 50.f));
+		data[MushroomType::Mushroom1].directions.emplace_back(Direction(45.f, 50.f));*/
+
+		return data;
+	}
+
 }

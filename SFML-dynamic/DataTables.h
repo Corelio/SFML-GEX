@@ -34,6 +34,7 @@
 #include "Projectile.h"
 #include "Pickup.h"
 #include "Particle.h"
+#include "Mushroom.h"
 
 namespace GEX
 {
@@ -82,8 +83,18 @@ namespace GEX
 		sf::Time								lifetime;
 	};
 
+	struct MushroomData
+	{
+		int										hitpoints;
+		float									speed;
+		TextureID								texture;
+		sf::IntRect								textureRect;
+		std::vector<Direction>					directions;
+	};
+
 	std::map<AircraftType, AircraftData>		initializeAircraftData();
 	std::map<Projectile::Type, ProjectileData>	initializeProjectileData();
 	std::map<Pickup::Type, PickupData>			initializePickupData();
 	std::map<Particle::Type, ParticleData>		initializeParticleData();
+	std::map<MushroomType, MushroomData>		initializeMushroomData();
 }

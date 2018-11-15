@@ -41,6 +41,7 @@
 #include "CommandQueue.h"
 #include "BloomEffect.h"
 #include "SoundPlayer.h"
+#include "Mushroom.h"
 
 namespace sf  //Forward declaration - This class does not need to know about this class
 {
@@ -71,6 +72,8 @@ namespace GEX
 		void						addEnemies();
 		void						addEnemy(AircraftType type, float relX, float relY);
 		void						spawnEmenies();
+
+		void						addMushroom(MushroomType type, float relX, float relY);
 
 		sf::FloatRect				getViewBounds() const;
 		sf::FloatRect				getBattlefieldBounds() const;
@@ -105,6 +108,19 @@ namespace GEX
 			float					y;
 		};
 
+		struct MSpawnPoint
+		{
+			MSpawnPoint(MushroomType _type, float _x, float _y)
+				: type(_type)
+				, x(_x)
+				, y(_y)
+			{}
+
+			MushroomType			type;
+			float					x;
+			float					y;
+		};
+
 	private:
 		const float					BORDER_DISTANCE = 40.f;
 
@@ -130,6 +146,7 @@ namespace GEX
 		CommandQueue				commandQueue_;
 
 		std::vector<SpawnPoint>		enemySpawnPoints_;
+		std::vector<MSpawnPoint>	mushroomSpawnPoints_;
 
 		std::vector<Aircraft*>		activeEnemies_;
 

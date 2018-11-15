@@ -34,6 +34,7 @@
 #include "ParticleNode.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "SoundNode.h"
+#include "Utility.h"
 
 namespace GEX
 {
@@ -138,6 +139,7 @@ namespace GEX
 
 	void World::addEnemies()
 	{
+		//Enemies
 		addEnemy(AircraftType::Raptor, -250.f, 600.f);
 		addEnemy(AircraftType::Raptor, 0.f, 600.f);
 		addEnemy(AircraftType::Raptor, +250.f, 600.f);
@@ -163,6 +165,23 @@ namespace GEX
 			}
 			);
 
+		//mushroom
+
+		for (int i = 0; i < 20; i++)
+		{
+			float x = static_cast<float>(randomInt(400));
+			x = randomInt(2) == 1 ? x * -1.f : x;
+			addMushroom(MushroomType::Mushroom1, x, static_cast<float>(randomInt(4000)));
+		}
+
+		//Sort the mushroom vector by Y position
+		std::sort(mushroomSpawnPoints_.begin(), mushroomSpawnPoints_.end(),
+			[](MSpawnPoint lhs, MSpawnPoint rhs)
+		{
+			return lhs.y < rhs.y;
+		}
+		);
+
 	}
 
 	void World::addEnemy(AircraftType type, float relX, float relY)
@@ -184,6 +203,22 @@ namespace GEX
 			enemySpawnPoints_.pop_back();
 
 		}
+
+		//Check if the vector is not empty and the last element is inside of the battlegrounds
+		while (!mushroomSpawnPoints_.empty() && mushroomSpawnPoints_.back().y > getBattlefieldBounds().top) {
+
+			auto spawnPoint = mushroomSpawnPoints_.back();
+			std::unique_ptr<Mushroom> mushroom(new Mushroom(spawnPoint.type, textures_));
+			mushroom->setPosition(spawnPoint.x, spawnPoint.y);
+			mushroom->setVelocity(0.f, -scrollSpeed_);
+			sceneLayers_[UpperAir]->attachChild(std::move(mushroom));
+			mushroomSpawnPoints_.pop_back();
+		}
+	}
+
+	void World::addMushroom(MushroomType type, float relX, float relY)
+	{
+		mushroomSpawnPoints_.push_back(MSpawnPoint(type, spawnPosition_.x + relX, spawnPosition_.y - relY));
 	}
 
 	sf::FloatRect World::getViewBounds() const
@@ -293,12 +328,28 @@ namespace GEX
 				player_->playLocalSound(commandQueue_, SoundEffectID::CollectPickup);
 				
 			}
+			else if (matchesCategories(collindingPair, Category::Type::PlayerAircraft, Category::Type::Mushroom))
+			{
+				auto& player = static_cast<Aircraft&>(*collindingPair.first);
+
+				player.destroy();
+
+			}
 			else if (matchesCategories(collindingPair, Category::Type::PlayerAircraft, Category::Type::EnemyProjectile) || matchesCategories(collindingPair, Category::EnemyAircraft, Category::AlliedProjectile))
 			{
   				auto& aircraft   = static_cast<Aircraft&>(*collindingPair.first);
 				auto& projectile = static_cast<Projectile&>(*collindingPair.second);
 
 				aircraft.damage(projectile.getDamage());
+				projectile.destroy();
+
+			}
+			else if (matchesCategories(collindingPair, Category::Mushroom, Category::AlliedProjectile))
+			{
+				auto& mushroom = static_cast<Mushroom&>(*collindingPair.first);
+				auto& projectile = static_cast<Projectile&>(*collindingPair.second);
+
+				mushroom.damage(projectile.getDamage());
 				projectile.destroy();
 
 			}
@@ -369,6 +420,7 @@ namespace GEX
 		textures_.load(GEX::TextureID::Particle,	"Media/Textures/Particle.png");
 		textures_.load(GEX::TextureID::Explosion,	"Media/Textures/Explosion.png");
 		textures_.load(GEX::TextureID::FinishLine,	"Media/Textures/FinishLine.png");
+		textures_.load(GEX::TextureID::Mushroom,	 "Media/Textures/Mushroom.png");
 	}
 
 	void World::buildScene()
